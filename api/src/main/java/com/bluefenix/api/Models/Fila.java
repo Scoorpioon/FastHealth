@@ -45,14 +45,10 @@ public class Fila {
         name = "pacientes_filas",
         joinColumns = @JoinColumn(name = "id_fila"),
         inverseJoinColumns = @JoinColumn(name = "id_paciente"))
-    @JoinColumn(name = "pacientes", nullable = false)
     private List<Paciente> pacientes = new ArrayList<>();
 
-    @OneToMany
-    @JoinColumn(name = "atendentes", nullable = false)
-    private List<Atendente> atendentes = new ArrayList<>();
-
-    @OneToMany
-    @JoinColumn(name = "consultas", nullable = false)
+    // O CascadeType.ALL significa que, quando a fila ser atualizada, as consultas também serão.
+    // o orphanRemoval = true significa que, quando uma consulta for removida da lista de consultas de uma fila, ela também será deletada do banco de dados
+    @OneToMany(mappedBy = "fila", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Consulta> consultas = new ArrayList<>();
 }

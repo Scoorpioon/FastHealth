@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -21,6 +22,10 @@ public class Consulta {
     @OneToOne
     @JoinColumn(name = "medico", nullable = false)
     private Medico medico;
+
+    @ManyToOne
+    @JoinColumn(name = "id_fila")
+    private Fila fila;
 
     @Column(name = "data_consulta", nullable = false)
     private Date dataConsulta;
