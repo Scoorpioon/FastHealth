@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import com.bluefenix.api.Models.Paciente;
 import com.bluefenix.api.Repositories.PacienteRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class PacienteServices {
     @Autowired
@@ -19,9 +21,19 @@ public class PacienteServices {
     }
 
     public Paciente findByCPF(String cpf) {
-        Paciente pacienteBuscado = this.pacienteRepositorio.findByCPF(cpf);
+        Paciente pacienteBuscado = this.pacienteRepositorio.findByCpf(cpf);
         System.out.println("! Busca realizada por CPF: " + pacienteBuscado + " !");
 
         return pacienteBuscado;
+    }
+
+    @Transactional
+    public Paciente criarConta(Paciente dadosRecebidosDoPaciente) {
+        dadosRecebidosDoPaciente.setIdPaciente(null);
+
+        // Salvar as informações do paciente na table
+        this.pacienteRepositorio.save(dadosRecebidosDoPaciente);
+
+        return dadosRecebidosDoPaciente;
     }
 }

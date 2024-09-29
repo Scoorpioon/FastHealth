@@ -7,5 +7,5 @@ import com.bluefenix.api.Models.Paciente;
 
 @Repository
 public interface PacienteRepository extends JpaRepository<Paciente, Long> {
-    Paciente findByCPF(String cpf);
+    Paciente findByCpf(String cpf);
 }
