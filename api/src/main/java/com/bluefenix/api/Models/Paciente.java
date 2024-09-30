@@ -29,7 +29,7 @@ public class Paciente {
     private Date nascimento;
 
     @Column(name = "numero_carteirinha", length = 15, nullable = false)
-    private Date numCarteirinha;
+    private String numCarteirinha;
 
     @Column(name = "rg", length = 9, nullable = false)
     private String rg;
@@ -43,9 +43,9 @@ public class Paciente {
     @Column (name = "paciente_pcd", columnDefinition = "BIT", nullable = false)
     private int pcd;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    /* @Temporal(TemporalType.TIMESTAMP)
     @Column (name = "datareg", nullable = false)
-    private Date registerDate;
+    private Date registerDate; */
 
     public Long getIdPaciente() {
         return idPaciente;
@@ -79,11 +79,11 @@ public class Paciente {
         this.nascimento = nascimento;
     }
 
-    public Date getNumCarteirinha() {
+    public String getNumCarteirinha() {
         return numCarteirinha;
     }
 
-    public void setNumCarteirinha(Date numCarteirinha) {
+    public void setNumCarteirinha(String numCarteirinha) {
         this.numCarteirinha = numCarteirinha;
     }
 
@@ -118,12 +118,12 @@ public class Paciente {
     public void setPcd(int pcd) {
         this.pcd = pcd;
     }
-
+/* 
     public Date getRegisterDate() {
         return registerDate;
     }
 
     public void setRegisterDate(Date registerDate) {
         this.registerDate = registerDate;
-    }
+    } */
 }
