@@ -18,7 +18,13 @@ public class Consulta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idConsulta;
-
+    
+    @Column(name = "data_consulta", nullable = false)
+    private Date dataConsulta;
+    
+    @Column(name = "tipo_consulta", length = 16, nullable = false)
+    private String tipoConsulta;
+    
     @OneToOne
     @JoinColumn(name = "medico", nullable = false)
     private Medico medico;
@@ -27,9 +33,43 @@ public class Consulta {
     @JoinColumn(name = "id_fila")
     private Fila fila;
 
-    @Column(name = "data_consulta", nullable = false)
-    private Date dataConsulta;
+    public Long getIdConsulta() {
+        return idConsulta;
+    }
 
-    @Column(name = "tipo_consulta", length = 16, nullable = false)
-    private String tipoConsulta;
+    public void setIdConsulta(Long idConsulta) {
+        this.idConsulta = idConsulta;
+    }
+
+    public Date getDataConsulta() {
+        return dataConsulta;
+    }
+
+    public void setDataConsulta(Date dataConsulta) {
+        this.dataConsulta = dataConsulta;
+    }
+
+    public String getTipoConsulta() {
+        return tipoConsulta;
+    }
+
+    public void setTipoConsulta(String tipoConsulta) {
+        this.tipoConsulta = tipoConsulta;
+    }
+
+    public Medico getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medico medico) {
+        this.medico = medico;
+    }
+
+    public Fila getFila() {
+        return fila;
+    }
+
+    public void setFila(Fila fila) {
+        this.fila = fila;
+    }
 }

@@ -28,4 +28,36 @@ public class Medico {
 
     @ManyToMany(mappedBy = "medicos")
     private List<Fila> filas = new ArrayList<>();
+
+    public Long getIdMedico() {
+        return idMedico;
+    }
+
+    public void setIdMedico(Long idMedico) {
+        this.idMedico = idMedico;
+    }
+
+    public String getCrm() {
+        return crm;
+    }
+
+    public void setCrm(String crm) {
+        this.crm = crm;
+    }
+
+    public String getSiglaCRM() {
+        return siglaCRM;
+    }
+
+    public void setSiglaCRM(String siglaCRM) {
+        this.siglaCRM = siglaCRM;
+    }
+
+    public List<Fila> getFilas() {
+        return filas;
+    }
+
+    public void setFilas(List<Fila> filas) {
+        this.filas = filas;
+    }
 }

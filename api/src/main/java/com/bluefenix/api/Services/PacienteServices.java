@@ -1,5 +1,6 @@
 package com.bluefenix.api.Services;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,12 @@ public class PacienteServices {
         System.out.println("! Busca realizada por CPF: " + pacienteBuscado + " !");
 
         return pacienteBuscado;
+    }
+
+    public List<Paciente> FindAll() {
+        System.out.println("ATENÇÃO ATENÇÃO: TODOS OS PACIENTES FORAM BUSCADOS!!!!!!!");
+
+        return this.pacienteRepositorio.findAll();
     }
 
     @Transactional

@@ -1,15 +1,16 @@
 package com.bluefenix.api.Models;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "paciente")
@@ -43,9 +44,8 @@ public class Paciente {
     @Column (name = "paciente_pcd", columnDefinition = "BIT", nullable = false)
     private int pcd;
 
-    /* @Temporal(TemporalType.TIMESTAMP)
-    @Column (name = "datareg", nullable = false)
-    private Date registerDate; */
+    @ManyToMany
+    private Set<Fila> filas = new HashSet<>();
 
     public Long getIdPaciente() {
         return idPaciente;
@@ -118,12 +118,12 @@ public class Paciente {
     public void setPcd(int pcd) {
         this.pcd = pcd;
     }
-/* 
-    public Date getRegisterDate() {
-        return registerDate;
+
+    public Set<Fila> getFilas() {
+        return filas;
     }
 
-    public void setRegisterDate(Date registerDate) {
-        this.registerDate = registerDate;
-    } */
+    public void setFilas(Set<Fila> filas) {
+        this.filas = filas;
+    }
 }
