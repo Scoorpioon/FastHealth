@@ -36,15 +36,22 @@ public class Atendente implements UserDetails {
     @Column (name = "email", length = 60, nullable = false, unique = true)
     private String email;
 
-    @Column (name = "senha", length = 25, nullable = false)
+    @Column (name = "senha", length = 60, nullable = false)
     private String senha;
 
     private UserRole role;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column (name = "datareg", nullable = false)
-    private Date registerDate = new Date();
-
+    private Date registerDate = new Date(); // Já gera de padrão a data pa nois
+    
+    public Atendente(String cpf, String nome, String email, String senha, UserRole role) {
+        this.cpf = cpf;
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.role = role;
+    }
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

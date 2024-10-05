@@ -9,4 +9,5 @@ import com.bluefenix.api.Models.Atendente;
 @Repository
 public interface AtendenteRepository extends JpaRepository<Atendente, Long> {
     UserDetails findByNome(String nome);
+    UserDetails findByCpf(String cpf);
 }
