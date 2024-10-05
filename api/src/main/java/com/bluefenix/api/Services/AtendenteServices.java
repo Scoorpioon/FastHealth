@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bluefenix.api.Models.Atendente;
-import com.bluefenix.api.Repositories.AtendenteRepositorio;
+import com.bluefenix.api.Repositories.AtendenteRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -12,7 +12,7 @@ import jakarta.transaction.Transactional;
 public class AtendenteServices {
 
     @Autowired
-    private AtendenteRepositorio atendenteRepositorio;
+    private AtendenteRepository atendenteRepositorio;
     
     @Transactional
     public Atendente criarConta(Atendente dadosRecebidosDoAtendente) {

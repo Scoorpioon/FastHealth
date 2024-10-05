@@ -1,6 +1,14 @@
 package com.bluefenix.api.Models;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.bluefenix.api.Models.domain.UserRole;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +21,7 @@ import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "atendente")
-public class Atendente {
+public class Atendente implements UserDetails {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +39,27 @@ public class Atendente {
     @Column (name = "senha", length = 25, nullable = false)
     private String senha;
 
+    private UserRole role;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column (name = "datareg", nullable = false)
-    private Date registerDate;
+    private Date registerDate = new Date();
+
+    
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER")); else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.nome;
+    }
 
     public Long getIdAtendente() {
         return idAtendente;

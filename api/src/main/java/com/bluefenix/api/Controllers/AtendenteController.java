@@ -29,5 +29,4 @@ public class AtendenteController {
 
         return ResponseEntity.created(uri).build();
     }
-    
 }
