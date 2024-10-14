@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,11 +31,14 @@ public class Fila {
     @Column(name = "data_fila", nullable = false)
     private Date dataFila;
 
-    @Column(name = "numero_consultas", nullable = false)
-    private int numeroConsultas;
+    @Column(name = "numero_consultas", nullable = true)
+    private int numeroConsultas = 0;
 
-    @Column(name = "tempo_medio_consulta", nullable = false)
+    @Column(name = "tempo_medio_consulta", nullable = true)
     private LocalTime tempoMedioConsulta;
+
+    @Column(name = "paciente_atual", nullable = true)
+    private Long id_paciente_atual;
 
     @ManyToMany
     @JoinTable(
@@ -52,6 +57,7 @@ public class Fila {
     // O CascadeType.ALL significa que, quando a fila ser atualizada, as consultas também serão.
     // o orphanRemoval = true significa que, quando uma consulta for removida da lista de consultas de uma fila, ela também será deletada do banco de dados
     @OneToMany(mappedBy = "fila", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Consulta> consultas = new ArrayList<>();
 
     public Long getIdFila() {

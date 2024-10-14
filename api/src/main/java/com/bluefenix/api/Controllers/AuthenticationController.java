@@ -1,4 +1,4 @@
-package com.bluefenix.api.Controllers;
+/* package com.bluefenix.api.Controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,11 +18,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import jakarta.validation.Valid;
+import jakarta.validation.Valid; */
 
 // Estou estudando sobre autenticação no Spring só agora. Eu acho que não necessariamente precisamos criar um controller somente para fazer autenticação, podemos inserir a autenticação em cada controller de usuário, como no de paciente e no de atendednte. Mas, por enquanto, vamo deixar assim mesmo. É bom que até organiza e deixa mais legível para eu ir relendo o código e estudando mais profundamente o conteúdo.
 
-@RestController
+/* @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
 
@@ -34,22 +34,6 @@ public class AuthenticationController {
 
     @Autowired
     private AtendenteRepository atendenteRepository;
-
-    @PostMapping("/atendente/login")
-    public ResponseEntity loginAtendente(@RequestBody @Valid AtAuthenticationDTO dados) {
-        var nomeESenha = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
-        var autenticacao = this.authenticationManager.authenticate(nomeESenha);
-
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/paciente/login")
-    public ResponseEntity loginPaciente(@RequestBody @Valid PaAuthenticationDTO dados) {
-        var nomeESenha = new UsernamePasswordAuthenticationToken(dados.cpf(), dados.senha());
-        var autenticacao = this.authenticationManager.authenticate(nomeESenha);
-
-        return ResponseEntity.ok().build();
-    }
     
     @PostMapping("/atendente/cadastro")
     public ResponseEntity register(@RequestBody @Valid AtRegisterDTO dados) {
@@ -62,4 +46,21 @@ public class AuthenticationController {
 
         return ResponseEntity.ok().build();
     }
-}
+
+    @PostMapping("/atendente/login")
+    public ResponseEntity loginAtendente(@RequestBody @Valid AtAuthenticationDTO dados) {
+        var nomeESenha = new UsernamePasswordAuthenticationToken(dados.cpf(), dados.senha());
+        System.out.println(nomeESenha.toString()); */
+        /* var autenticacao = this.authenticationManager.authenticate(nomeESenha); */
+
+/*         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/paciente/login")
+    public ResponseEntity loginPaciente(@RequestBody @Valid PaAuthenticationDTO dados) {
+        var cpfESenha = new UsernamePasswordAuthenticationToken(dados.cpf(), dados.senha());
+        var autenticacao = this.authenticationManager.authenticate(cpfESenha);
+
+        return ResponseEntity.ok().build();
+    }
+} */

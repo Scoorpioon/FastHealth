@@ -2,6 +2,8 @@ package com.bluefenix.api.Services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,7 @@ public class PacienteServices {
         return pacienteBuscado;
     }
 
-    public List<Paciente> FindAll() {
+    public List<Paciente> findAll() {
         System.out.println("ATENÇÃO ATENÇÃO: TODOS OS PACIENTES FORAM BUSCADOS!!!!!!!");
 
         return this.pacienteRepositorio.findAll();

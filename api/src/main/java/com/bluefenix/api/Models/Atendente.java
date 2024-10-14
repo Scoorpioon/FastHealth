@@ -4,14 +4,16 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.security.core.GrantedAuthority;
+/* import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetails; */
 
 import com.bluefenix.api.Models.domain.UserRole;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,7 +23,7 @@ import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "atendente")
-public class Atendente implements UserDetails {
+public class Atendente /* implements UserDetails */ {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +41,7 @@ public class Atendente implements UserDetails {
     @Column (name = "senha", length = 60, nullable = false)
     private String senha;
 
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -53,12 +56,12 @@ public class Atendente implements UserDetails {
         this.role = role;
     }
     
-    @Override
+/*     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER")); else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-    }
+    } */
 
-    @Override
+/*     @Override
     public String getPassword() {
         return this.senha;
     }
@@ -66,7 +69,7 @@ public class Atendente implements UserDetails {
     @Override
     public String getUsername() {
         return this.nome;
-    }
+    } */
 
     public Long getIdAtendente() {
         return idAtendente;

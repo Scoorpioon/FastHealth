@@ -1,4 +1,4 @@
-package com.bluefenix.api.Services;
+/* package com.bluefenix.api.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,4 +17,4 @@ public class AuthorizationService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return atendenteRepositorio.findByNome(username);
     }
-}
+} */

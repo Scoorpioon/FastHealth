@@ -1,6 +1,13 @@
 package com.bluefenix.api.Models;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,17 +26,21 @@ public class Consulta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idConsulta;
     
-    @Column(name = "data_consulta", nullable = false)
+    // Por enquanto, vamos inserir o horário da consulta na data mesmo
+    @Column(name = "data_horario_consulta", nullable = false)
     private Date dataConsulta;
     
     @Column(name = "tipo_consulta", length = 16, nullable = false)
     private String tipoConsulta;
     
-    @OneToOne
+
+    // Ainda não criei o path de criação de médico, então vai ficar comentado por enquanto
+/*     @OneToOne
     @JoinColumn(name = "medico", nullable = false)
-    private Medico medico;
+    private Medico medico; */
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "id_fila")
     private Fila fila;
 
@@ -57,13 +68,13 @@ public class Consulta {
         this.tipoConsulta = tipoConsulta;
     }
 
-    public Medico getMedico() {
+/*     public Medico getMedico() {
         return medico;
     }
 
     public void setMedico(Medico medico) {
         this.medico = medico;
-    }
+    } */
 
     public Fila getFila() {
         return fila;

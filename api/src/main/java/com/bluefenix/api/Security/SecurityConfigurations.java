@@ -1,4 +1,4 @@
-package com.bluefenix.api.Security;
+/* package com.bluefenix.api.Security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +25,7 @@ public class SecurityConfigurations {
         .requestMatchers(HttpMethod.POST, "/atendente").hasRole("atendente")
         .requestMatchers(HttpMethod.POST, "/auth/atendente/cadastro").permitAll()
         .requestMatchers(HttpMethod.POST, "/auth/atendente/login").permitAll()
+        .requestMatchers(HttpMethod.POST, "")
         
         )
         .build();
@@ -39,4 +40,4 @@ public class SecurityConfigurations {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-}
+} */

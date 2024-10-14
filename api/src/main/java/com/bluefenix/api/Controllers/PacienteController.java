@@ -46,7 +46,7 @@ public class PacienteController {
     // Função de dev
     @GetMapping("/buscarTodosPacientes")
     public ResponseEntity<List<Paciente>> buscarTodosPacientes() {
-        List<Paciente> pacientes = this.pacienteServicos.FindAll();
+        List<Paciente> pacientes = this.pacienteServicos.findAll();
 
         return ResponseEntity.ok(pacientes);
     }
