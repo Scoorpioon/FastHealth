@@ -1,11 +1,8 @@
 package com.bluefenix.api.Services;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bluefenix.api.Models.Consulta;
 import com.bluefenix.api.Models.Fila;
 import com.bluefenix.api.Repositories.FilaRepository;
 
@@ -20,9 +17,6 @@ public class FilaServices {
     
     @Autowired
     private FilaRepository filaRepositorio;
-
-    @Autowired
-    private PacienteServices servicosPaciente;
 
     @Transactional
     public Fila cadastrarFila(Fila dadosRecebidos) {

@@ -10,9 +10,6 @@ import com.bluefenix.api.Repositories.ConsultaRepository;
 public class ConsultaServices {
 
     @Autowired
-    private PacienteServices servicosPaciente;
-
-    @Autowired
     private ConsultaRepository repositorioConsulta;
 
     public Consulta criarConsulta(Consulta dadosRecebidos) {

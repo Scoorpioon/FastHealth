@@ -1,13 +1,6 @@
 package com.bluefenix.api.Models;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 
@@ -46,6 +38,11 @@ public class Consulta {
     @JsonBackReference
     @JoinColumn(name = "id_fila")
     private Fila fila;
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "id_paciente")
+    private Paciente paciente;
 
     public Long getIdConsulta() {
         return idConsulta;
@@ -85,5 +82,13 @@ public class Consulta {
 
     public void setFila(Fila fila) {
         this.fila = fila;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
     }
 }

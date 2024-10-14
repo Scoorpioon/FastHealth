@@ -1,15 +1,22 @@
 package com.bluefenix.api.Models;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import java.util.List;
+
+import java.time.LocalDate;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -27,7 +34,7 @@ public class Paciente {
     private String cpf;
 
     @Column(name = "data_nascimento", nullable = false)
-    private Date nascimento;
+    private LocalDate nascimento;
 
     @Column(name = "numero_carteirinha", length = 15, nullable = false)
     private String numCarteirinha;
@@ -45,7 +52,11 @@ public class Paciente {
     private int pcd;
 
     @ManyToMany
+    @JsonManagedReference
     private Set<Fila> filas = new HashSet<>();
+
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
+    private List<Consulta> consultas;
 
     public Long getIdPaciente() {
         return idPaciente;
@@ -71,11 +82,11 @@ public class Paciente {
         this.cpf = cpf;
     }
 
-    public Date getNascimento() {
+    public LocalDate getNascimento() {
         return nascimento;
     }
 
-    public void setNascimento(Date nascimento) {
+    public void setNascimento(LocalDate nascimento) {
         this.nascimento = nascimento;
     }
 
@@ -125,5 +136,13 @@ public class Paciente {
 
     public void setFilas(Set<Fila> filas) {
         this.filas = filas;
+    }
+
+    public List<Consulta> getConsultas() {
+        return consultas;
+    }
+
+    public void setConsultas(List<Consulta> consultas) {
+        this.consultas = consultas;
     }
 }
