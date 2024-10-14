@@ -11,6 +11,8 @@ import com.bluefenix.api.Repositories.FilaRepository;
 
 import java.util.List;
 
+import java.time.LocalDate;
+
 import jakarta.transaction.Transactional;
 
 @Service
@@ -36,6 +38,13 @@ public class FilaServices {
     public List<Fila> findAll() {
         return this.filaRepositorio.findAll();
 
+    }
+
+    @Transactional
+    public Fila encontrarFilaPorData(LocalDate data) {
+        Fila filaEncontrada = this.filaRepositorio.findByDataFila(data);
+
+        return filaEncontrada;
     }
 
 /*     @Transactional

@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 import com.bluefenix.api.Models.Fila;
 import com.bluefenix.api.Models.Paciente;
 
+import java.time.LocalDate;
+
 @Repository
 public interface FilaRepository extends JpaRepository<Fila, Long> {
-    Fila findByDataFila(Date data); // Procurar a fila pela data
+    Fila findByDataFila(LocalDate data); // Procurar a fila pela data
 }

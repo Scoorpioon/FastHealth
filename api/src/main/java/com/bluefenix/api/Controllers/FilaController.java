@@ -15,9 +15,13 @@ import com.bluefenix.api.Services.PacienteServices;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Date;
 import java.util.List;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/fila")
@@ -46,6 +50,20 @@ public class FilaController {
 
         return ResponseEntity.ok(filas);
     }
+
+    @GetMapping("/encontrar/{dataDaFila}")
+
+    public ResponseEntity<Fila> encontrarFilaPorData(@PathVariable LocalDate dataDaFila) {
+        Fila filaEncontrada = filaServicos.encontrarFilaPorData(dataDaFila);
+
+        if(filaEncontrada != null) {
+            return ResponseEntity.ok(filaEncontrada);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+    
     
     
 }

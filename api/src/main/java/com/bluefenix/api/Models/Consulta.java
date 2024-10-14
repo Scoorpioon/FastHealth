@@ -19,6 +19,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
+
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "consulta")
 public class Consulta {
@@ -28,7 +31,7 @@ public class Consulta {
     
     // Por enquanto, vamos inserir o horário da consulta na data mesmo
     @Column(name = "data_horario_consulta", nullable = false)
-    private Date dataConsulta;
+    private LocalDateTime dataConsulta;
     
     @Column(name = "tipo_consulta", length = 16, nullable = false)
     private String tipoConsulta;
@@ -52,11 +55,11 @@ public class Consulta {
         this.idConsulta = idConsulta;
     }
 
-    public Date getDataConsulta() {
+    public LocalDateTime getDataConsulta() {
         return dataConsulta;
     }
 
-    public void setDataConsulta(Date dataConsulta) {
+    public void setDataConsulta(LocalDateTime dataConsulta) {
         this.dataConsulta = dataConsulta;
     }
 

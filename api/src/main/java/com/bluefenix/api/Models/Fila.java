@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -29,7 +31,7 @@ public class Fila {
     private Long idFila;
 
     @Column(name = "data_fila", nullable = false)
-    private Date dataFila;
+    private LocalDate dataFila;
 
     @Column(name = "numero_consultas", nullable = true)
     private int numeroConsultas = 0;
@@ -68,11 +70,11 @@ public class Fila {
         this.idFila = idFila;
     }
 
-    public Date getDataFila() {
+    public LocalDate getDataFila() {
         return dataFila;
     }
 
-    public void setDataFila(Date dataFila) {
+    public void setDataFila(LocalDate dataFila) {
         this.dataFila = dataFila;
     }
 
