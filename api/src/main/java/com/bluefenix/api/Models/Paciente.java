@@ -1,8 +1,10 @@
 package com.bluefenix.api.Models;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.List;
@@ -51,12 +53,8 @@ public class Paciente {
     @Column (name = "paciente_pcd", columnDefinition = "BIT", nullable = false)
     private int pcd;
 
-    @ManyToMany
-    @JsonManagedReference
-    private Set<Fila> filas = new HashSet<>();
-
-    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
-    private List<Consulta> consultas;
+    @OneToMany(mappedBy = "paciente")
+    private Set<Consulta> consultas;
 
     public Long getIdPaciente() {
         return idPaciente;
@@ -130,19 +128,11 @@ public class Paciente {
         this.pcd = pcd;
     }
 
-    public Set<Fila> getFilas() {
-        return filas;
-    }
-
-    public void setFilas(Set<Fila> filas) {
-        this.filas = filas;
-    }
-
-    public List<Consulta> getConsultas() {
+    public Set<Consulta> getConsultas() {
         return consultas;
     }
 
-    public void setConsultas(List<Consulta> consultas) {
+    public void setConsultas(Set<Consulta> consultas) {
         this.consultas = consultas;
     }
 }

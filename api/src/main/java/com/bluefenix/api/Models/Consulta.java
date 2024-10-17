@@ -1,6 +1,7 @@
 package com.bluefenix.api.Models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,13 +36,11 @@ public class Consulta {
     private Medico medico; */
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "id_fila")
     private Fila fila;
 
     @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "id_paciente")
+    @JoinColumn(name = "paciente_id")
     private Paciente paciente;
 
     public Long getIdConsulta() {
