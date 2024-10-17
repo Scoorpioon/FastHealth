@@ -2,13 +2,13 @@ package com.bluefenix.api.Models;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -23,6 +23,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idFila", scope = Fila.class)
 @Table(name = "fila")
 public class Fila {
     @Id
@@ -48,12 +49,12 @@ public class Fila {
         inverseJoinColumns = @JoinColumn(name = "id_medico"))
     private List<Medico> medicos;
 
-    @ManyToMany
+/*     @ManyToMany
     @JoinTable(
         name = "pacientes_filas",
         joinColumns = @JoinColumn(name = "id_fila"),
         inverseJoinColumns = @JoinColumn(name = "id_paciente"))
-    private Set<Paciente> pacientes = new HashSet<>();
+    private Set<Paciente> pacientes = new HashSet<>(); */
 
     // O CascadeType.ALL significa que, quando a fila ser atualizada, as consultas também serão.
     // o orphanRemoval = true significa que, quando uma consulta for removida da lista de consultas de uma fila, ela também será deletada do banco de dados
@@ -100,13 +101,13 @@ public class Fila {
         this.medicos = medicos;
     }
 
-    public Set<Paciente> getPacientes() {
+/*     public Set<Paciente> getPacientes() {
         return pacientes;
     }
 
     public void setPacientes(Set<Paciente> pacientes) {
         this.pacientes = pacientes;
-    }
+    } */
 
     public List<Consulta> getConsultas() {
         return consultas;

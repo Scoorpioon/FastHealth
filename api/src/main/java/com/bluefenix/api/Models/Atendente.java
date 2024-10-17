@@ -6,20 +6,20 @@ import java.util.Date;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails; */
 
-import com.bluefenix.api.Models.domain.UserRole;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "atendente")
 public class Atendente /* implements UserDetails */ {
     
@@ -39,19 +39,15 @@ public class Atendente /* implements UserDetails */ {
     @Column (name = "senha", length = 60, nullable = false)
     private String senha;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column (name = "datareg", nullable = false)
     private Date registerDate = new Date(); // Já gera de padrão a data pa nois
     
-    public Atendente(String cpf, String nome, String email, String senha, UserRole role) {
+    public Atendente(String cpf, String nome, String email, String senha) {
         this.cpf = cpf;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.role = role;
     }
     
 /*     @Override
