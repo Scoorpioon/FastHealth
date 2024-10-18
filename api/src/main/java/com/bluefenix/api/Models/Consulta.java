@@ -11,6 +11,9 @@ import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -28,18 +31,12 @@ public class Consulta {
     
     @Column(name = "tipo_consulta", length = 16, nullable = false)
     private String tipoConsulta;
-    
 
-    // Ainda não criei o path de criação de médico, então vai ficar comentado por enquanto
-/*     @OneToOne
-    @JoinColumn(name = "medico", nullable = false)
-    private Medico medico; */
-
-    @ManyToOne
+    @ManyToOne @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "id_fila")
     private Fila fila;
 
-    @ManyToOne
+    @ManyToOne @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "paciente_id")
     private Paciente paciente;
 

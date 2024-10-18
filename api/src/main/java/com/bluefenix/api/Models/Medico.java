@@ -1,4 +1,4 @@
-package com.bluefenix.api.Models;
+/* package com.bluefenix.api.Models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,4 +62,4 @@ public class Medico {
     public void setFilas(List<Fila> filas) {
         this.filas = filas;
     }
-}
+} */

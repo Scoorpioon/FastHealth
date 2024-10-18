@@ -1,5 +1,6 @@
 package com.bluefenix.api.Services;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,24 +46,25 @@ public class FilaServices {
 
         return filaEncontrada;
     }
-
-/*     @Transactional
-    public Consulta addConsultaToFila(Date data) {
-        
-
-    }
- */
+    
     /* private Fila alterarPacienteAtual(long id) {
 
     } */
 
+    @Transactional
     public Fila removerPacienteDaFila(Long idConsulta, Long idFila) {
+        System.out.println("Função executada");
+
         Optional<Fila> filaBuscada = repositorioFila.findById(idFila);
         Optional<Consulta> consultaBuscada = repositorioConsulta.findById(idConsulta);
 
+        
         if(filaBuscada.isPresent() && consultaBuscada.isPresent()) {
+            
             Fila filaEncontrada = filaBuscada.get();
+            Hibernate.initialize(filaEncontrada.getConsultas());
             Consulta consultaEncontrada = consultaBuscada.get();
+
 
             filaEncontrada.getConsultas().remove(consultaEncontrada);
             repositorioFila.save(filaEncontrada);

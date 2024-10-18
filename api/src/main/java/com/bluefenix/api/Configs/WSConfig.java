@@ -15,13 +15,13 @@ public class WSConfig implements WebSocketMessageBrokerConfigurer {
     // Registra as URLs permitidas. Enquanto esse projeto for somente para fins educacionais, liberamos o acesso por completo mesmo. Mas PELO AMOR DE DEUS, se isso aqui deixar de ser somente para uso educacional, não esquece de limitar esse CORS, por favor irmão
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/fws").setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint("/ws") .setAllowedOrigins("http://127.0.0.1:5500").withSockJS();
     }
 
     // Define os endpoints. Servidor para cliente, cliente para servidor
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/filaws");
+        config.enableSimpleBroker("/filaWS");
         config.setApplicationDestinationPrefixes("/app");
     }
 }

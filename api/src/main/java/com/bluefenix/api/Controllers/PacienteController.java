@@ -34,11 +34,16 @@ public class PacienteController {
     @PostMapping("/criar")
     @Validated
     public ResponseEntity<Void> criarPaciente(@RequestBody Paciente informacoesRecebidasDoPaciente) {
-        this.pacienteServicos.criarConta(informacoesRecebidasDoPaciente);
-
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(informacoesRecebidasDoPaciente.getIdPaciente()).toUri();
-
-        return ResponseEntity.created(uri).build();
+        try {
+            this.pacienteServicos.criarConta(informacoesRecebidasDoPaciente);
+    
+            URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(informacoesRecebidasDoPaciente.getIdPaciente()).toUri();
+    
+            return ResponseEntity.created(uri).build();
+        } catch(Exception error) {
+            System.out.println("Deu um erro ao tentar criar o paciente: " + error);
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     // Função de dev

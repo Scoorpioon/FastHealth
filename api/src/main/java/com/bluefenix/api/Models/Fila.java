@@ -4,6 +4,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -16,9 +19,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -42,23 +42,9 @@ public class Fila {
     @Column(name = "paciente_atual", nullable = true)
     private Long id_paciente_atual;
 
-    @ManyToMany
-    @JoinTable(
-        name = "fila_medico",
-        joinColumns = @JoinColumn(name = "id_fila"),
-        inverseJoinColumns = @JoinColumn(name = "id_medico"))
-    private List<Medico> medicos;
-
-/*     @ManyToMany
-    @JoinTable(
-        name = "pacientes_filas",
-        joinColumns = @JoinColumn(name = "id_fila"),
-        inverseJoinColumns = @JoinColumn(name = "id_paciente"))
-    private Set<Paciente> pacientes = new HashSet<>(); */
-
     // O CascadeType.ALL significa que, quando a fila ser atualizada, as consultas também serão.
     // o orphanRemoval = true significa que, quando uma consulta for removida da lista de consultas de uma fila, ela também será deletada do banco de dados
-    @OneToMany(mappedBy = "fila", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "fila", cascade = CascadeType.ALL, orphanRemoval = true) @Fetch(FetchMode.JOIN)
     private List<Consulta> consultas = new ArrayList<>();
 
     public Long getIdFila() {
@@ -91,14 +77,6 @@ public class Fila {
 
     public void setTempoMedioConsulta(LocalTime tempoMedioConsulta) {
         this.tempoMedioConsulta = tempoMedioConsulta;
-    }
-
-    public List<Medico> getMedicos() {
-        return medicos;
-    }
-
-    public void setMedicos(List<Medico> medicos) {
-        this.medicos = medicos;
     }
 
 /*     public Set<Paciente> getPacientes() {

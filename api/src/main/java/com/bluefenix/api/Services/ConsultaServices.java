@@ -31,7 +31,7 @@ public class ConsultaServices {
             consulta.getTipoConsulta(),
             consulta.getPaciente().getIdPaciente(),
             consulta.getFila().getIdFila()
-            );
+        );
     }
 
     public List<ConsultaDTO> listarConsultas() {
