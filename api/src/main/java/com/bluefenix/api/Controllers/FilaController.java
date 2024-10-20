@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.bluefenix.api.Models.Fila;
+import com.bluefenix.api.Models.DTOs.MetodosWS.BuscarFilaPorDataRequest;
 import com.bluefenix.api.Models.DTOs.MetodosWS.RemoverConsultaRequest;
 import com.bluefenix.api.Services.FilaServices;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,14 +61,31 @@ public class FilaController {
 
     }
 
+    @MessageMapping("/retornarFilaPorData")
+    @SendTo("/filaWS")
+    public Fila retornarFilaAtualizada(BuscarFilaPorDataRequest requisicao) {
+        System.out.println(String.format("Requisição de fila [ID: undefined] realizada"));
+
+        Fila filaRequisitada = servicoFila.encontrarFilaPorData(requisicao.getDataFila());
+
+        if(filaRequisitada != null) {
+            return filaRequisitada;
+        } else {
+            return new Fila();
+        }
+    }
+
     @MessageMapping("/removerConsulta")
-    @SendTo("/filaAtualizada")
+    @SendTo("/filaWS")
     public Fila removerConsulta(RemoverConsultaRequest requisicao) {
         System.out.println("Remoção de consulta requisitada");
+
+        System.out.println("Fila requisitada: " + requisicao.getIdFila());
+        System.out.println("Consulta requisitada: " + requisicao.getIdConsulta());
 
         Long filaId = requisicao.getIdFila();
         Long consultaId = requisicao.getIdConsulta();
 
-        return servicoFila.removerPacienteDaFila(filaId, consultaId);
+        return servicoFila.removerPacienteDaFila(consultaId, filaId);
     }
 }

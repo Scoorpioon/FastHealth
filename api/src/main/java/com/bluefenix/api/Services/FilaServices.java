@@ -46,10 +46,6 @@ public class FilaServices {
 
         return filaEncontrada;
     }
-    
-    /* private Fila alterarPacienteAtual(long id) {
-
-    } */
 
     @Transactional
     public Fila removerPacienteDaFila(Long idConsulta, Long idFila) {
@@ -58,6 +54,12 @@ public class FilaServices {
         Optional<Fila> filaBuscada = repositorioFila.findById(idFila);
         Optional<Consulta> consultaBuscada = repositorioConsulta.findById(idConsulta);
 
+        System.out.println(" ");
+
+        System.out.println("ID buscado da fila: " + idFila);
+        System.out.println("ID buscado da consulta: " + idConsulta);
+
+        System.out.println(" ");
         
         if(filaBuscada.isPresent() && consultaBuscada.isPresent()) {
             
@@ -71,7 +73,15 @@ public class FilaServices {
 
             return filaEncontrada;
         } else {
-            throw new RuntimeException("Putz mano, não deu pra achar alguma das informações. Verifica de novo ae");
+            if(!filaBuscada.isPresent()) {
+                System.out.println("A fila não foi encontrada");
+            }
+
+            if(!consultaBuscada.isPresent()) {
+                System.out.println("A consulta não foi encontrada");
+            }
+
+            throw new RuntimeException("Putz mano, nao deu pra achar alguma das informacoes. Verifica de novo ae");
         }
     }
 }

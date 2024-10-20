@@ -2,6 +2,7 @@ package com.bluefenix.api.Models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -11,14 +12,10 @@ import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idConsulta", scope = Consulta.class)
+/* @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idConsulta", scope = Consulta.class) */
 @Table(name = "consulta")
 public class Consulta {
     @Id
@@ -32,12 +29,13 @@ public class Consulta {
     @Column(name = "tipo_consulta", length = 16, nullable = false)
     private String tipoConsulta;
 
-    @ManyToOne @Fetch(FetchMode.JOIN)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_fila")
     private Fila fila;
 
-    @ManyToOne @Fetch(FetchMode.JOIN)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "paciente_id")
+    @JsonIgnoreProperties("consultas")
     private Paciente paciente;
 
     public Long getIdConsulta() {
@@ -63,14 +61,6 @@ public class Consulta {
     public void setTipoConsulta(String tipoConsulta) {
         this.tipoConsulta = tipoConsulta;
     }
-
-/*     public Medico getMedico() {
-        return medico;
-    }
-
-    public void setMedico(Medico medico) {
-        this.medico = medico;
-    } */
 
     public Fila getFila() {
         return fila;

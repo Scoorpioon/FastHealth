@@ -2,13 +2,13 @@ package com.bluefenix.api.Models;
 
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,7 +16,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idPaciente", scope = Paciente.class)
+/* @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idPaciente", scope = Paciente.class) */
 @Table(name = "paciente")
 public class Paciente {
     
@@ -48,7 +48,8 @@ public class Paciente {
     @Column (name = "paciente_pcd", columnDefinition = "BIT", nullable = false)
     private int pcd;
 
-    @OneToMany(mappedBy = "paciente")
+    @OneToMany(mappedBy = "paciente", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"fila", "paciente"}) // Não precisamos saber em qual fila a consulta está e nem repetir a informação de paciente
     private Set<Consulta> consultas;
 
     public Long getIdPaciente() {
