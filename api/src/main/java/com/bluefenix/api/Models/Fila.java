@@ -21,7 +21,6 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 /* @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idFila", scope = Fila.class) */
 @Table(name = "fila")
@@ -47,6 +46,10 @@ public class Fila {
     @OneToMany(mappedBy = "fila", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("fila")
     private List<Consulta> consultas = new ArrayList<>();
+    
+    public Fila(LocalDate dataFila) {
+        this.dataFila = dataFila;
+    }
 
     public Long getIdFila() {
         return idFila;
