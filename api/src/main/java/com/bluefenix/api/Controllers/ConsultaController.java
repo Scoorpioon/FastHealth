@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
-
 @RestController
 @RequestMapping("/consultas")
 public class ConsultaController {
@@ -25,7 +23,11 @@ public class ConsultaController {
     private ConsultaServices servicosConsulta;
 
     @PostMapping("/criar")
-    public ResponseEntity<Void> criarConsulta(@RequestBody Consulta dadosRecebidosDeLaConsuelta) {
+    public ResponseEntity<?> criarConsulta(@RequestBody Consulta dadosRecebidosDeLaConsuelta) {
+        if(dadosRecebidosDeLaConsuelta.getFila() != null) {
+            return ResponseEntity.badRequest().body("Informacoes de fila nao podem mais ser inseridas manualmente ao criar uma consulta. Para quaisquer duvidas, so contatar o Gabriel, pq a documentação ainda NAO TA PRONTA");
+        }
+
         this.servicosConsulta.criarConsulta(dadosRecebidosDeLaConsuelta);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dadosRecebidosDeLaConsuelta.getIdConsulta()).toUri();

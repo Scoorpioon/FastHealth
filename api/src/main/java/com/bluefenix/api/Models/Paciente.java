@@ -16,7 +16,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-/* @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idPaciente", scope = Paciente.class) */
 @Table(name = "paciente")
 public class Paciente {
     

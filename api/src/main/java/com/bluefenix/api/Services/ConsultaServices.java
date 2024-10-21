@@ -30,7 +30,7 @@ public class ConsultaServices {
             filaEncontrada = this.filaServices.cadastrarFila(
                 new Fila(dadosRecebidos.getDataConsulta().toLocalDate())
             );
-        }
+        } // A consulta já associa automaticamente à fila, e se a fila não existir, é criada aqui mesmo também. Por questões de segurança, eu fiz com que o código não permita mais inserção manual do ID de uma fila na consulta, belê?
 
         dadosRecebidos.setFila(filaEncontrada);
 
@@ -49,7 +49,7 @@ public class ConsultaServices {
             consulta.getPaciente().getIdPaciente(),
             consulta.getFila().getIdFila()
         );
-    }
+    } // Eu não lembro pra quê eu fiz uma DTO de consulta, mas algum bom motivo teve kkkkk
 
     public List<ConsultaDTO> listarConsultas() {
         List<Consulta> consultasEncontradas = repositorioConsulta.findAll();
