@@ -1,10 +1,14 @@
 package com.bluefenix.api.Models;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
-/* import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails; */
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.bluefenix.api.Models.Roles.UserRole;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "atendente")
-public class Atendente /* implements UserDetails */ {
+public class Atendente implements UserDetails {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,28 +46,32 @@ public class Atendente /* implements UserDetails */ {
     @Temporal(TemporalType.TIMESTAMP)
     @Column (name = "datareg", nullable = false)
     private Date registerDate = new Date(); // Já gera de padrão a data pa nois
+
+    @Column(columnDefinition = "CHAR(5)")
+    private UserRole roles;
     
-    public Atendente(String cpf, String nome, String email, String senha) {
-        this.cpf = cpf;
+    public Atendente(String email, String nome, String cpf, String senha, UserRole roles) {
         this.nome = nome;
         this.email = email;
+        this.cpf = cpf;
         this.senha = senha;
+        this.roles = roles;
     }
     
-/*     @Override
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER")); else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-    } */
+        return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+    }
 
-/*     @Override
+    @Override
     public String getPassword() {
         return this.senha;
     }
 
     @Override
     public String getUsername() {
-        return this.nome;
-    } */
+        return this.email;
+    }
 
     public Long getIdAtendente() {
         return idAtendente;

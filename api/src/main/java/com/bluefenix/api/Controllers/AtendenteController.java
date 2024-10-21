@@ -25,6 +25,8 @@ public class AtendenteController {
     public ResponseEntity<Void> criarAtendente(@RequestBody Atendente informacoesRecebidasDoAtendente) {
         this.atendenteServicos.criarConta(informacoesRecebidasDoAtendente);
 
+        System.out.println(informacoesRecebidasDoAtendente.getCpf());
+
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(informacoesRecebidasDoAtendente.getIdAtendente()).toUri();
 
         return ResponseEntity.created(uri).build();
