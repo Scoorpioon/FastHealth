@@ -6,21 +6,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bluefenix.api.Models.Atendente;
 import com.bluefenix.api.Models.DTOs.SecurityDTOs.AtAuthenticationDTO;
 import com.bluefenix.api.Models.DTOs.SecurityDTOs.AtRegisterDTO;
+import com.bluefenix.api.Models.DTOs.SecurityDTOs.LoginResponseDTO;
 import com.bluefenix.api.Models.DTOs.SecurityDTOs.PaAuthenticationDTO;
 import com.bluefenix.api.Repositories.AtendenteRepository;
-import com.bluefenix.api.Repositories.PacienteRepository;
-
-import java.util.Optional;
+/* import com.bluefenix.api.Repositories.PacienteRepository; */
+import com.bluefenix.api.Security.TokenService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,11 +34,13 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private PacienteRepository pacienteRepository;
+    /* @Autowired
+    private PacienteRepository pacienteRepository; */
 
     @Autowired
     private AtendenteRepository atendenteRepository;
+
+    @Autowired TokenService tokenService;
     
     @PostMapping("/atendente/cadastro")
     public ResponseEntity<?> register(@RequestBody @Valid AtRegisterDTO dados) {
@@ -67,10 +67,11 @@ public class AuthenticationController {
     @PostMapping("/atendente/login")
     public ResponseEntity<?> loginAtendente(@RequestBody @Valid AtAuthenticationDTO dados) {
 
-        var nomeESenha = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
+        var emailESenha = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
         
+        Authentication autenticacao = null;
         try {
-            var autenticacao = this.authenticationManager.authenticate(nomeESenha);
+            autenticacao = this.authenticationManager.authenticate(emailESenha);
             System.out.println(autenticacao.getCredentials());
         } catch(Exception error) {
             System.out.println("Ocorreu o seguinte erro ao tentar fazer login" + error);
@@ -80,13 +81,25 @@ public class AuthenticationController {
             }
         }
 
-        return ResponseEntity.ok().build();
+        var token = tokenService.gerarToken((Atendente) autenticacao.getPrincipal());
+
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/paciente/login")
     public ResponseEntity<?> loginPaciente(@RequestBody @Valid PaAuthenticationDTO dados) {
-        var cpfESenha = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
-        var autenticacao = this.authenticationManager.authenticate(cpfESenha);
+        var emailESenha = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
+
+        try {
+            var autenticacao = this.authenticationManager.authenticate(emailESenha);
+            System.out.println(autenticacao.getCredentials());
+        } catch(Exception error) {
+            System.out.println("Ocorreu o seguinte erro ao tentar fazer login" + error);
+
+            if(error instanceof BadCredentialsException) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("E-mail ou senha invalidos. Vaza daqui");
+            }
+        }
 
         return ResponseEntity.ok().build();
     }
