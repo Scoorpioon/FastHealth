@@ -52,7 +52,7 @@ public class Paciente implements UserDetails, Usuario {
     @Column (name = "email", length = 60, nullable = false, unique = true)
     private String email;
 
-    @Column (name = "senha", length = 25, nullable = false)
+    @Column (name = "senha", length = 60, nullable = false)
     private String senha;
 
     @Column (name = "paciente_pcd", columnDefinition = "BIT", nullable = false)

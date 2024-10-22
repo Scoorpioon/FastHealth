@@ -110,11 +110,16 @@ public class AuthenticationController {
     public ResponseEntity<?> loginPaciente(@RequestBody @Valid CredentialsDTO dados) {
         var emailESenha = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
 
+        Authentication autenticacao = null;
         try {
-            var autenticacao = this.authenticationManager.authenticate(emailESenha);
-            System.out.println(autenticacao.getCredentials());
+            autenticacao = this.authenticationManager.authenticate(emailESenha);
+
+            System.out.println(" ");
+            System.out.println("Credenciais: " + autenticacao);
+            System.out.println(" ");
+
         } catch(Exception error) {
-            System.out.println("Ocorreu o seguinte erro ao tentar fazer login" + error);
+            System.out.println("Ocorreu o seguinte erro ao tentar fazer login: " + error);
 
             if(error instanceof BadCredentialsException) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("E-mail ou senha invalidos. Vaza daqui");
