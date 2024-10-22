@@ -11,7 +11,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.bluefenix.api.Models.Atendente;
+import com.bluefenix.api.Models.Usuario;
 
 @Service
 public class TokenService {
@@ -19,13 +19,13 @@ public class TokenService {
     @Value("${api.security.token.segredo}")
     private String shhh;
 
-    public String gerarToken(Atendente usuarioAtendente) {
+    public String gerarToken(Usuario usuario) {
         try {
             Algorithm algoritmo = Algorithm.HMAC256(shhh);
 
             String token = JWT.create()
                             .withIssuer("auth-api")
-                            .withSubject(usuarioAtendente.getEmail())
+                            .withSubject(usuario.getEmail())
                             .withExpiresAt(gerarDataExpiracao())
                             .sign(algoritmo);
 

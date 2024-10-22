@@ -4,12 +4,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bluefenix.api.Models.Atendente;
-import com.bluefenix.api.Models.DTOs.SecurityDTOs.AtAuthenticationDTO;
-import com.bluefenix.api.Models.DTOs.SecurityDTOs.AtRegisterDTO;
+import com.bluefenix.api.Models.Paciente;
+import com.bluefenix.api.Models.Usuario;
+import com.bluefenix.api.Models.DTOs.SecurityDTOs.CredentialsDTO;
+import com.bluefenix.api.Models.DTOs.SecurityDTOs.RegistroAtendenteDTO;
+import com.bluefenix.api.Models.DTOs.SecurityDTOs.RegistroPacienteDTO;
 import com.bluefenix.api.Models.DTOs.SecurityDTOs.LoginResponseDTO;
-import com.bluefenix.api.Models.DTOs.SecurityDTOs.PaAuthenticationDTO;
 import com.bluefenix.api.Repositories.AtendenteRepository;
-/* import com.bluefenix.api.Repositories.PacienteRepository; */
+import com.bluefenix.api.Repositories.PacienteRepository;
 import com.bluefenix.api.Security.TokenService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,23 +36,22 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    /* @Autowired
-    private PacienteRepository pacienteRepository; */
+    @Autowired
+    private PacienteRepository repositorioPaciente;
 
     @Autowired
-    private AtendenteRepository atendenteRepository;
+    private AtendenteRepository repositorioAtendente;
 
     @Autowired TokenService tokenService;
     
     @PostMapping("/atendente/cadastro")
-    public ResponseEntity<?> register(@RequestBody @Valid AtRegisterDTO dados) {
+    public ResponseEntity<?> cadastrarAtendente(@RequestBody @Valid RegistroAtendenteDTO dados) {
 
-        System.out.println(this.atendenteRepository.findByEmail(dados.email()));
+        System.out.println(this.repositorioAtendente.findByEmail(dados.email()));
 
-        if(this.atendenteRepository.findByEmail(dados.email()) != null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("E-mail já cadastrado");
+        if(this.repositorioAtendente.findByEmail(dados.email()) != null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("E-mail já cadastrado");
 
         String senhaEncriptada;
-
         try {
             senhaEncriptada = new BCryptPasswordEncoder().encode(dados.senha());
         } catch(Exception error) {
@@ -59,13 +60,32 @@ public class AuthenticationController {
 
         Atendente atendenteCriado = new Atendente(dados.email(), dados.nome(), dados.cpf(), senhaEncriptada, dados.roles());
 
-        this.atendenteRepository.save(atendenteCriado);
+        this.repositorioAtendente.save(atendenteCriado);
 
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/paciente/cadastro")
+    public ResponseEntity<?> cadastrarPaciente(@RequestBody @Valid RegistroPacienteDTO dados) {
+
+        if(this.repositorioPaciente.findByEmail(dados.email()) != null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ja existe um usuario com este e-mail");
+
+        String senhaEncriptada;
+        try {
+            senhaEncriptada = new BCryptPasswordEncoder().encode(dados.senha());
+        } catch(Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
+
+        Paciente pacienteCriado = new Paciente(dados.nome(), dados.cpf(), dados.nascimento(), dados.numCarteirinha(), dados.rg(), dados.email(), senhaEncriptada, dados.pcd(), dados.roles());
+
+        this.repositorioPaciente.save(pacienteCriado);
+        
+        return ResponseEntity.ok("Paciente criado com sucesso!");
+    }
+
     @PostMapping("/atendente/login")
-    public ResponseEntity<?> loginAtendente(@RequestBody @Valid AtAuthenticationDTO dados) {
+    public ResponseEntity<?> loginAtendente(@RequestBody @Valid CredentialsDTO dados) {
 
         var emailESenha = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
         
@@ -81,13 +101,13 @@ public class AuthenticationController {
             }
         }
 
-        var token = tokenService.gerarToken((Atendente) autenticacao.getPrincipal());
+        var token = tokenService.gerarToken((Usuario) autenticacao.getPrincipal());
 
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/paciente/login")
-    public ResponseEntity<?> loginPaciente(@RequestBody @Valid PaAuthenticationDTO dados) {
+    public ResponseEntity<?> loginPaciente(@RequestBody @Valid CredentialsDTO dados) {
         var emailESenha = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
 
         try {

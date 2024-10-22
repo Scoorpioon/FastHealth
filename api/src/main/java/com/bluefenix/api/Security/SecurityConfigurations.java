@@ -31,6 +31,11 @@ public class SecurityConfigurations {
             .requestMatchers(HttpMethod.POST, "/auth/atendente/cadastro").permitAll()
             .requestMatchers(HttpMethod.POST, "/auth/atendente/login").permitAll()
             .requestMatchers(HttpMethod.GET, "/pacientes/buscarTodosPacientes").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.POST, "/pacientes/criar").permitAll()
+            .requestMatchers(HttpMethod.POST, "/consultas/criar").permitAll()
+            .requestMatchers(HttpMethod.GET, "/consultas/buscarConsultas").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/fila/encontrar/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/api/fila/todasAsFilas").permitAll()
             /* .anyRequest().permitAll() */
         )
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

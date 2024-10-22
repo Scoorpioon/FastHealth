@@ -1,7 +1,14 @@
 package com.bluefenix.api.Models;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.bluefenix.api.Models.Roles.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDate;
@@ -14,10 +21,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "paciente")
-public class Paciente {
+public class Paciente implements UserDetails, Usuario {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,9 +58,41 @@ public class Paciente {
     @Column (name = "paciente_pcd", columnDefinition = "BIT", nullable = false)
     private int pcd;
 
+    @Column(columnDefinition = "CHAR(5)")
+    private UserRole roles;
+
     @OneToMany(mappedBy = "paciente", fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"fila", "paciente"}) // Não precisamos saber em qual fila a consulta está e nem repetir a informação de paciente
     private Set<Consulta> consultas;
+
+    
+    public Paciente(String nome, String cpf, LocalDate nascimento, String numCarteirinha, String rg, String email,
+            String senha, int pcd, UserRole roles) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.nascimento = nascimento;
+        this.numCarteirinha = numCarteirinha;
+        this.rg = rg;
+        this.email = email;
+        this.senha = senha;
+        this.pcd = pcd;
+        this.roles = roles;
+    }
+    
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
 
     public Long getIdPaciente() {
         return idPaciente;
@@ -129,5 +172,13 @@ public class Paciente {
 
     public void setConsultas(Set<Consulta> consultas) {
         this.consultas = consultas;
+    }
+
+    public UserRole getRoles() {
+        return roles;
+    }
+
+    public void setRoles(UserRole roles) {
+        this.roles = roles;
     }
 }

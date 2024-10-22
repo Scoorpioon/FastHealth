@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.bluefenix.api.Repositories.AtendenteRepository;
+import com.bluefenix.api.Repositories.PacienteRepository;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,6 +25,9 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     AtendenteRepository repositorioAtendente;
 
+    @Autowired
+    PacienteRepository repositorioPaciente;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -32,8 +36,13 @@ public class SecurityFilter extends OncePerRequestFilter {
         if(token != null) {
             var email = tokenService.validarToken(token);
             UserDetails usuario = repositorioAtendente.findByEmail(email);
-
+            
             System.out.println("E-mail encontrado: " + email);
+
+            if(usuario == null) {
+                usuario = repositorioPaciente.findByEmail(email);
+                System.out.println("E-mail cadastrado é de paciente");
+            }
 
             var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
 
