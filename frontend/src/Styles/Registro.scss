@@ -1,0 +1,14 @@
+@import 'Login.scss';
+
+#secao__Login {
+    #caixa__Login {
+        .caixa_Botoes {
+            justify-content: center;
+
+            input[type="submit"] {
+                background-color: $corPrincipal;
+                color: white;
+            }
+        }
+    }
+}
