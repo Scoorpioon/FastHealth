@@ -27,7 +27,7 @@ public class SecurityConfigurations {
         .csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers(HttpMethod.POST, "/atendente").hasRole("ADMIN")
+/*             .requestMatchers(HttpMethod.POST, "/atendente").hasRole("ADMIN")
             .requestMatchers(HttpMethod.POST, "/auth/atendente/cadastro").permitAll()
             .requestMatchers(HttpMethod.POST, "/auth/atendente/login").permitAll()
             .requestMatchers(HttpMethod.POST, "/auth/paciente/cadastro").hasRole("ADMIN")
@@ -38,8 +38,8 @@ public class SecurityConfigurations {
             .requestMatchers(HttpMethod.GET, "/consultas/buscarConsultas").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/fila/encontrar/**").permitAll()
             .requestMatchers(HttpMethod.GET, "/api/fila/todasAsFilas").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/fila/criar").hasRole("ADMIN")
-            /* .anyRequest().permitAll() */
+            .requestMatchers(HttpMethod.POST, "/api/fila/criar").hasRole("ADMIN") */
+            .anyRequest().permitAll()
         )
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
         .build();

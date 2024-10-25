@@ -101,6 +101,8 @@ public class AuthenticationController {
             }
         }
 
+        System.out.println("Informação que eu preciso: " + autenticacao.getPrincipal());
+
         var token = tokenService.gerarToken((Usuario) autenticacao.getPrincipal());
 
         return ResponseEntity.ok(new LoginResponseDTO(token));
@@ -110,7 +112,19 @@ public class AuthenticationController {
     public ResponseEntity<?> loginPaciente(@RequestBody @Valid CredentialsDTO dados) {
         var emailESenha = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
 
-        Authentication autenticacao = null;
+        System.out.println("Variável emailESenha" + emailESenha);
+
+/*         if(dados.email() != null && dados.senha() != null) {
+            if(this.repositorioPaciente.findByEmail(dados.email()) != null) {
+                if(dados.senha() == this.repositorioPaciente.findByEmail(dados.email()).getPassword()) {
+                   var token = tokenService.gerarToken((Usuario) )
+                }
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Necessario preeencher ambos os campos");
+        } */
+
+        /* Authentication autenticacao = null;
         try {
             autenticacao = this.authenticationManager.authenticate(emailESenha);
 
@@ -124,7 +138,7 @@ public class AuthenticationController {
             if(error instanceof BadCredentialsException) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("E-mail ou senha invalidos. Vaza daqui");
             }
-        }
+        } */
 
         return ResponseEntity.ok().build();
     }

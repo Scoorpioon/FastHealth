@@ -28,12 +28,12 @@ public class FilaServices {
     public Fila cadastrarFila(Fila dadosRecebidos) {
         dadosRecebidos.setIdFila(null);
 
-        for(Consulta consulta : dadosRecebidos.getConsultas()) {
-            if(consulta.getDataConsulta().toLocalDate() != dadosRecebidos.getDataFila()) {
+/*         for(Consulta consulta : dadosRecebidos.getConsultas()) {
+            if(consulta.getDataConsulta() != dadosRecebidos.getDataFila()) {
                 throw new RuntimeException("Uma das consultas possui uma data divergente da data da fila. Necessário verificar.");
             }
         }
-
+ */
         this.repositorioFila.save(dadosRecebidos);
 
         return dadosRecebidos;

@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -22,10 +23,12 @@ public class Consulta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idConsulta;
     
-    // Por enquanto, vamos inserir o horário da consulta na data mesmo
+    @Column(name = "data_consulta", nullable = false)
+    private LocalDate dataConsulta;
+
     @Column(name = "data_horario_consulta", nullable = false)
-    private LocalDateTime dataConsulta;
-    
+    private LocalDateTime dataHorarioConsulta;
+
     @Column(name = "tipo_consulta", length = 16, nullable = false)
     private String tipoConsulta;
 
@@ -46,11 +49,19 @@ public class Consulta {
         this.idConsulta = idConsulta;
     }
 
-    public LocalDateTime getDataConsulta() {
+    public LocalDate getDataConsulta() {
         return dataConsulta;
     }
 
-    public void setDataConsulta(LocalDateTime dataConsulta) {
+    public LocalDateTime getDataHorarioConsulta() {
+        return dataHorarioConsulta;
+    }
+
+    public void setDataHorarioConsulta(LocalDateTime dataHorarioConsulta) {
+        this.dataHorarioConsulta = dataHorarioConsulta;
+    }
+
+    public void setDataConsulta(LocalDate dataConsulta) {
         this.dataConsulta = dataConsulta;
     }
 

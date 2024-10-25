@@ -1,20 +1,22 @@
 package com.bluefenix.api.Models.DTOs;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class ConsultaDTO {
     private Long idConsulta;
-    private LocalDateTime dataConsulta;
+    private LocalDate dataConsulta;
+    private LocalDateTime dataHorarioConsulta;
     private String tipoConsulta;
     private Long idPaciente;
     private Long idFila;
     
-    public ConsultaDTO(Long idConsulta, LocalDateTime dataConsulta, String tipoConsulta, Long idPaciente, Long idFila) {
+    public ConsultaDTO(Long idConsulta, LocalDate dataConsulta, LocalDateTime dataHorarioConsulta, String tipoConsulta, Long idPaciente) {
         this.idConsulta = idConsulta;
         this.dataConsulta = dataConsulta;
+        this.dataHorarioConsulta = dataHorarioConsulta;
         this.tipoConsulta = tipoConsulta;
         this.idPaciente = idPaciente;
-        this.idFila = idFila;
     }
 
     public Long getIdConsulta() {
@@ -25,12 +27,20 @@ public class ConsultaDTO {
         this.idConsulta = idConsulta;
     }
 
-    public LocalDateTime getDataConsulta() {
+    public LocalDate getDataConsulta() {
         return dataConsulta;
     }
 
-    public void setDataConsulta(LocalDateTime dataConsulta) {
+    public void setDataConsulta(LocalDate dataConsulta) {
         this.dataConsulta = dataConsulta;
+    }
+
+    public LocalDateTime getDataHorarioConsulta() {
+        return dataHorarioConsulta;
+    }
+
+    public void setDataHorarioConsulta(LocalDateTime dataHorarioConsulta) {
+        this.dataHorarioConsulta = dataHorarioConsulta;
     }
 
     public String getTipoConsulta() {

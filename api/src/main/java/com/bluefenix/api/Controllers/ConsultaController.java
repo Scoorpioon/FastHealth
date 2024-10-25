@@ -15,6 +15,9 @@ import com.bluefenix.api.Services.ConsultaServices;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/consultas")
@@ -25,7 +28,7 @@ public class ConsultaController {
     @PostMapping("/criar")
     public ResponseEntity<?> criarConsulta(@RequestBody Consulta dadosRecebidosDeLaConsuelta) {
         if(dadosRecebidosDeLaConsuelta.getFila() != null) {
-            return ResponseEntity.badRequest().body("Informacoes de fila nao podem mais ser inseridas manualmente ao criar uma consulta. Para quaisquer duvidas, so contatar o Gabriel, pq a documentação ainda NAO TA PRONTA");
+            return ResponseEntity.badRequest().body("A fila não pode ser inserida manualmente na criação da consulta.");
         }
 
         this.servicosConsulta.criarConsulta(dadosRecebidosDeLaConsuelta);
@@ -38,6 +41,13 @@ public class ConsultaController {
     @GetMapping("/buscarConsultas")
     public ResponseEntity<List<ConsultaDTO>> listarConsultas() {
         List<ConsultaDTO> consultasEncontradas = this.servicosConsulta.listarConsultas();
+        return ResponseEntity.ok(consultasEncontradas);
+    }
+
+    @GetMapping("/buscarConsultas/{data}")
+    public ResponseEntity<List<ConsultaDTO>> buscarPorData(@PathVariable LocalDate data) {
+        List<ConsultaDTO> consultasEncontradas = this.servicosConsulta.listarConsultasPorData(data);
+        
         return ResponseEntity.ok(consultasEncontradas);
     }
 }

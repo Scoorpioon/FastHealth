@@ -11,6 +11,8 @@ import com.bluefenix.api.Models.Fila;
 import com.bluefenix.api.Models.DTOs.ConsultaDTO;
 import com.bluefenix.api.Repositories.ConsultaRepository;
 
+import java.time.LocalDate;
+
 @Service
 public class ConsultaServices {
 
@@ -25,16 +27,14 @@ public class ConsultaServices {
 
         System.out.println("Criação de fila requisitada. Data da consulta: " + dadosRecebidos.getDataConsulta());
 
-        Fila filaEncontrada = this.filaServices.encontrarFilaPorData(dadosRecebidos.getDataConsulta().toLocalDate());
+        Fila filaEncontrada = this.filaServices.encontrarFilaPorData(dadosRecebidos.getDataConsulta());
         if(filaEncontrada == null) {
             filaEncontrada = this.filaServices.cadastrarFila(
-                new Fila(dadosRecebidos.getDataConsulta().toLocalDate())
+                new Fila(dadosRecebidos.getDataConsulta())
             );
         } // A consulta já associa automaticamente à fila, e se a fila não existir, é criada aqui mesmo também. Por questões de segurança, eu fiz com que o código não permita mais inserção manual do ID de uma fila na consulta, belê?
 
-        dadosRecebidos.setFila(filaEncontrada);
-
-        System.out.println("ID da fila cadastrada na consulta: " + dadosRecebidos.getFila().getIdFila());
+        // dadosRecebidos.setFila(filaEncontrada); // Não vamos mais inserir o paciente direto na fila
 
         this.repositorioConsulta.save(dadosRecebidos);
 
@@ -45,14 +45,20 @@ public class ConsultaServices {
         return new ConsultaDTO(
             consulta.getIdConsulta(),
             consulta.getDataConsulta(),
+            consulta.getDataHorarioConsulta(),
             consulta.getTipoConsulta(),
-            consulta.getPaciente().getIdPaciente(),
-            consulta.getFila().getIdFila()
+            consulta.getPaciente().getIdPaciente()
         );
     } // Eu não lembro pra quê eu fiz uma DTO de consulta, mas algum bom motivo teve kkkkk
 
     public List<ConsultaDTO> listarConsultas() {
         List<Consulta> consultasEncontradas = repositorioConsulta.findAll();
+
+        return consultasEncontradas.stream().map(this::converterParaDTO).collect(Collectors.toList());
+    }
+
+    public List<ConsultaDTO> listarConsultasPorData(LocalDate data) {
+        List<Consulta> consultasEncontradas = this.repositorioConsulta.findByDataConsulta(data);
 
         return consultasEncontradas.stream().map(this::converterParaDTO).collect(Collectors.toList());
     }

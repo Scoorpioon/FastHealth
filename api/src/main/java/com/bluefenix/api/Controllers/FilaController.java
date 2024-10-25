@@ -65,6 +65,7 @@ public class FilaController {
     @SendTo("/filaWS")
     public Fila retornarFilaAtualizada(BuscarFilaPorDataRequest requisicao) {
         System.out.println(String.format("Requisição de fila [ID: undefined] realizada"));
+        System.out.println("Informações recebidas: " + requisicao.getDataFila());
 
         Fila filaRequisitada = servicoFila.encontrarFilaPorData(requisicao.getDataFila());
 
