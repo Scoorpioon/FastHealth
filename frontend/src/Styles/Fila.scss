@@ -1,0 +1,55 @@
+@import 'General.scss';
+
+#secao__Fila {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+
+    gap: 16px;
+
+    width: 100%;
+    height: 100vh;
+
+    text-align: center;
+
+    h1 {
+        position: relative;
+        font-size: 2.1em;
+        margin: 20px 0;
+
+        &::after {
+            content: '';
+
+            display: block;
+            position: relative;
+            top: 8px;
+
+            width: 100%;
+            height: 2px;
+
+            background-color: black;
+        }
+    }
+
+}
+
+.nome_pacientes /* (lista dos pacientes) */ {
+    list-style-type: none;
+    font-weight: bold;
+
+    li {
+        font-size: 1.8em;            
+    }
+}
+
+.caixa__Botoes {
+    display: flex;
+    gap: 8px;
+
+    button {
+        @include botao;
+
+        border-radius: 4px;
+    }
+}

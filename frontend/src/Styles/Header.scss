@@ -1,0 +1,48 @@
+@import 'General.scss';
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    height: 40px;
+    /* border-bottom: 1px solid rgb(236, 236, 236); */
+
+    padding: 0 20px;
+    
+    h1 {
+        color: rgb(220, 220, 220);
+    }
+
+    .botao_desconectar {
+        font-weight: bold;
+    }
+
+    .caixa_Botoes {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+
+        height: 80%;
+        width: 10%;
+
+        a {
+            @include botao;
+
+            border-radius: 4px;
+            width: 50%;
+
+            padding-top: 4px;
+
+            &:nth-child(2) {
+                background-color: $corBotaoCinza;
+                color: $corTextoBotaoCinza;
+
+                &:hover {
+                    background-color: rgb(221, 221, 221);
+                }
+            }
+        }
+    }
+}

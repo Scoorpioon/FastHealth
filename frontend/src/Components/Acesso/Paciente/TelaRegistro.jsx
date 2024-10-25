@@ -31,8 +31,10 @@ const TelaRegistro = () => {
 
                 <div className="caixa_Campos">
                     <input type="text" placeholder="Seu nome" name="nome" id="nome" onChange={handleAlteracaoDados} />
-                    <input type="number" placeholder="Seu CPF" name="cpf" id="cpf" min="0" max="99999999999" onChange={handleAlteracaoDados} />
-                    <input type="number" placeholder="Seu RG" name="rg" id="rg" min="0" max="999999999" onChange={handleAlteracaoDados} />
+                    <div className="caixa_Multiplas">
+                        <input type="number" placeholder="Seu CPF" name="cpf" id="cpf" min="0" max="99999999999" onChange={handleAlteracaoDados} />
+                        <input type="number" placeholder="Seu RG" name="rg" id="rg" min="0" max="999999999" onChange={handleAlteracaoDados} />
+                    </div>
                     <input type="number" placeholder="Seu número de carteira SUS" name="numCarteirinha" id="numCarteirinha" min="0" max="9999999999999" onChange={handleAlteracaoDados} />
                     <input type="email" placeholder="Seu e-mail" name="email" id="email" onChange={handleAlteracaoDados} />
                     <input type="password" placeholder="Sua senha" name="senha" id="senha" onChange={handleAlteracaoDados} />

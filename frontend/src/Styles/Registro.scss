@@ -2,6 +2,15 @@
 
 #secao__Login {
     #caixa__Login {
+        .caixa_Multiplas {
+            display: flex;
+            justify-content: space-between;
+
+            input {
+                width: 49%;
+            }
+        }
+        
         .caixa_Botoes {
             justify-content: center;
 

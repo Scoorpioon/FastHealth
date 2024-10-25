@@ -1,0 +1,37 @@
+@import 'General.scss';
+@import 'Fila.scss';
+
+#secao__Atendente {
+    @include secao;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: center;
+
+    #visualizacao_fila, #visualizacao_pacientes {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        width: 50%;
+        height: 100%;
+    }
+
+    #visualizacao_fila {
+        justify-content: center;
+        gap: 16px;
+
+        border-right: 1px solid gray;
+
+/*         &::after {
+            content: '';
+            display: block;
+            height: 50px;
+            width: 1px;
+            color: gray;
+        } */
+    }
+
+    #visualizacao_pacientes {
+
+    }
+}
