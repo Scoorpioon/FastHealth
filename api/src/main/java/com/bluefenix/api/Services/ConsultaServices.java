@@ -2,6 +2,7 @@ package com.bluefenix.api.Services;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,8 @@ import com.bluefenix.api.Models.Consulta;
 import com.bluefenix.api.Models.Fila;
 import com.bluefenix.api.Models.DTOs.ConsultaDTO;
 import com.bluefenix.api.Repositories.ConsultaRepository;
+
+import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
 
@@ -21,6 +24,11 @@ public class ConsultaServices {
 
     @Autowired
     private FilaServices filaServices;
+
+    @Transactional
+    public Optional<Consulta> findById(Long id) {
+        return this.repositorioConsulta.findById(id);
+    }
 
     public Consulta criarConsulta(Consulta dadosRecebidos) {
         dadosRecebidos.setIdConsulta(null);
@@ -57,9 +65,9 @@ public class ConsultaServices {
         return consultasEncontradas.stream().map(this::converterParaDTO).collect(Collectors.toList());
     }
 
-    public List<ConsultaDTO> listarConsultasPorData(LocalDate data) {
+    public List<Consulta> listarConsultasPorData(LocalDate data) {
         List<Consulta> consultasEncontradas = this.repositorioConsulta.findByDataConsulta(data);
 
-        return consultasEncontradas.stream().map(this::converterParaDTO).collect(Collectors.toList());
+        return consultasEncontradas/* .stream().map(this::converterParaDTO).collect(Collectors.toList()) */;
     }
 }

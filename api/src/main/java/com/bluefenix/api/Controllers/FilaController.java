@@ -11,9 +11,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.bluefenix.api.Models.Consulta;
 import com.bluefenix.api.Models.Fila;
 import com.bluefenix.api.Models.DTOs.MetodosWS.BuscarFilaPorDataRequest;
-import com.bluefenix.api.Models.DTOs.MetodosWS.RemoverConsultaRequest;
+import com.bluefenix.api.Models.DTOs.MetodosWS.ConsultaRequest;
+import com.bluefenix.api.Services.ConsultaServices;
 import com.bluefenix.api.Services.FilaServices;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
 
 import java.time.LocalDate;
 
@@ -30,6 +33,9 @@ public class FilaController {
     
     @Autowired
     private FilaServices servicoFila;
+
+    @Autowired
+    private ConsultaServices servicoConsulta;
 
     @PostMapping("/criar")
     @Validated
@@ -78,7 +84,7 @@ public class FilaController {
 
     @MessageMapping("/removerConsulta")
     @SendTo("/filaWS")
-    public Fila removerConsulta(RemoverConsultaRequest requisicao) {
+    public Fila removerConsulta(ConsultaRequest requisicao) {
         System.out.println("Remoção de consulta requisitada");
 
         System.out.println("Fila requisitada: " + requisicao.getIdFila());
@@ -88,5 +94,18 @@ public class FilaController {
         Long consultaId = requisicao.getIdConsulta();
 
         return servicoFila.removerPacienteDaFila(consultaId, filaId);
+    }
+
+    @MessageMapping("/inserirConsulta")
+    @SendTo("/filaWS")
+    public Fila inserirPaciente(ConsultaRequest requisicao) {
+        System.out.println("Paciente inserido na fila do dia de hoje:" + requisicao.getIdConsulta());
+
+        Optional<Fila> fila = this.servicoFila.findById(requisicao.getIdFila());
+        Optional<Consulta> consulta = this.servicoConsulta.findById(requisicao.getIdConsulta());
+        
+        fila.get().getConsultas().add(consulta.get());
+
+        return fila.get();
     }
 }

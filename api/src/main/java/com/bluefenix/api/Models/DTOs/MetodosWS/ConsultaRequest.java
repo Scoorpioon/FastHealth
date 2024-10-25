@@ -1,6 +1,6 @@
 package com.bluefenix.api.Models.DTOs.MetodosWS;
 
-public class RemoverConsultaRequest {
+public class ConsultaRequest {
     private Long idConsulta;
     private Long idFila;
 

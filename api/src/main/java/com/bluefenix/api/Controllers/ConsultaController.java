@@ -45,8 +45,8 @@ public class ConsultaController {
     }
 
     @GetMapping("/buscarConsultas/{data}")
-    public ResponseEntity<List<ConsultaDTO>> buscarPorData(@PathVariable LocalDate data) {
-        List<ConsultaDTO> consultasEncontradas = this.servicosConsulta.listarConsultasPorData(data);
+    public ResponseEntity<List<Consulta>> buscarPorData(@PathVariable LocalDate data) {
+        List<Consulta> consultasEncontradas = this.servicosConsulta.listarConsultasPorData(data);
         
         return ResponseEntity.ok(consultasEncontradas);
     }

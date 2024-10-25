@@ -40,6 +40,11 @@ public class FilaServices {
     }
 
     @Transactional
+    public Optional<Fila> findById(Long idFila) {
+        return this.repositorioFila.findById(idFila);
+    }
+
+    @Transactional
     public List<Fila> findAll() {
         return this.repositorioFila.findAll();
 
