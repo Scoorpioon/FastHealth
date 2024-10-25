@@ -101,11 +101,8 @@ public class FilaController {
     public Fila inserirPaciente(ConsultaRequest requisicao) {
         System.out.println("Paciente inserido na fila do dia de hoje:" + requisicao.getIdConsulta());
 
-        Optional<Fila> fila = this.servicoFila.findById(requisicao.getIdFila());
-        Optional<Consulta> consulta = this.servicoConsulta.findById(requisicao.getIdConsulta());
-        
-        fila.get().getConsultas().add(consulta.get());
+        Fila filaAtualizada = this.servicoFila.inserirNovaConsultaFila(requisicao.getIdFila(), requisicao.getIdConsulta());
 
-        return fila.get();
+        return filaAtualizada;
     }
 }

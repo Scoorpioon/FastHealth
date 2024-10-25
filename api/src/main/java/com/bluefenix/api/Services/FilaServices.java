@@ -51,6 +51,23 @@ public class FilaServices {
     }
 
     @Transactional
+    public Fila inserirNovaConsultaFila(Long idFila, Long idConsulta) {
+        Optional<Fila> fila = this.repositorioFila.findById(idFila);
+        Optional<Consulta> consulta = this.repositorioConsulta.findById(idConsulta);
+
+        Fila filaFormatada = fila.get();
+        Consulta consultaFormatada = consulta.get();
+
+        filaFormatada.getConsultas().add(consultaFormatada);
+
+        consultaFormatada.setFila(filaFormatada);
+
+        repositorioFila.save(filaFormatada);
+
+        return filaFormatada;
+    }
+
+    @Transactional
     public Fila encontrarFilaPorData(LocalDate data) {
         Fila filaEncontrada = this.repositorioFila.findByDataFila(data);
 

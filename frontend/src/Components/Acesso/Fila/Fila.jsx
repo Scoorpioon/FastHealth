@@ -9,16 +9,11 @@ const Fila = () => {
     const stompClient = Stomp.over(socket);
 
     useEffect(() => {
-      stompClient.connect({}, () => {
+      stompClient.connect({}, (frame) => {
         stompClient.subscribe('/filaWS', (message) => {
           setFila(JSON.parse(message.body));
-
-          console.log(JSON.parse(message.body));
         });
-
       });
-
-      /* stompClient.send('/app/retornarFilaPorData', {}, {"dataFila": [2024, 8, 3]}); */
 
       return () => {
         if (stompClient) {
@@ -30,6 +25,14 @@ const Fila = () => {
     const pesquisarFila = () => {
       stompClient.send('/app/retornarFilaPorData', {}, JSON.stringify({"dataFila": [2024, 8, 3]}));
     }
+
+    const inserirNaFila = () => {
+      stompClient.send('/app/inserirConsulta', {}, JSON.stringify({idFila: 1, idConsulta:2}));
+    } 
+
+    useEffect(() => {
+      console.log(fila);
+    }, [fila]);
 
     return (
       <section id="secao__Fila">
@@ -46,7 +49,7 @@ const Fila = () => {
         </ul>
         <div className="caixa__Botoes">
           <button onClick={pesquisarFila}>Atualizar fila</button>
-          <button onClick={() => {console.log('Paciente passado')}}>Passar paciente na fila</button>
+          <button onClick={inserirNaFila}>Passar paciente na fila</button>
         </div>
       </section>
     );

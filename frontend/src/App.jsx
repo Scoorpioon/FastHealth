@@ -11,8 +11,8 @@ import './Styles/General.scss';
 function App() {
   return (
     <>
-{/*       <Header logado={false} /> */}
       <TelaAtendente />
+      {/* <TelaFila /> */}
     </>
   );
 }

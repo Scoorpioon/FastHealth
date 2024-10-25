@@ -20,7 +20,7 @@
         justify-content: center;
         gap: 16px;
 
-        border-right: 1px solid gray;
+        border-right: 1px solid rgb(220, 220, 220);
 
 /*         &::after {
             content: '';
@@ -33,5 +33,39 @@
 
     #visualizacao_pacientes {
 
+    }
+}
+
+.tabela_consultas {
+    font-size: 1.1em;
+    padding: 4px;
+
+    thead {
+        background-color: rgb(235, 235, 235);
+        color: rgb(32, 32, 32);
+
+        tr {
+            th {
+                padding: 0 26px;
+            }
+        }
+    }
+
+    tbody {
+        tr {
+            td {
+                padding: 2px 0;
+                text-align: center;
+
+                button {
+                    background-color: $corPrincipal;
+                    border: none;
+                    color: white;
+
+                    padding: 6px;
+                    cursor: pointer;
+                }
+            }
+        }
     }
 }
