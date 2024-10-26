@@ -22,13 +22,15 @@
 
         border-right: 1px solid rgb(220, 220, 220);
 
-/*         &::after {
-            content: '';
-            display: block;
-            height: 50px;
-            width: 1px;
-            color: gray;
-        } */
+        .nome_pacientes {
+            text-align: center;
+
+            li {
+                &:nth-child(1) {
+                    font-size: 2.8em;
+                }
+            }
+        }
     }
 
     #visualizacao_pacientes {

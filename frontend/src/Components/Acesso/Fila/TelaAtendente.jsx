@@ -42,21 +42,28 @@ const TelaAtendente = () => {
     };
   
     // Função para remover uma consulta da fila
-    const removerConsultaDaFila = (consultaId) => {
-      if (stompClient.current && stompClient.current.connected) {
-        stompClient.current.send('/app/removerConsulta', {}, JSON.stringify({ id: consultaId }));
+    const passarPacienteFila = () => {
+      if(stompClient.current && stompClient.current.connected) {
+        stompClient.current.send('/app/removerConsulta', {}, JSON.stringify({ idFila: fila.idFila, idConsulta: fila.consultas[0].idConsulta }));
       } else {
         console.error('Não deu pra estabalecer a conexão do STOMP por algum motivo. Se vira ai pra achar');
       }
     };
   
     // Função para inserir uma nova consulta na fila
-    const inserirPacienteFila = (novaConsulta) => {
-      if (stompClient.current && stompClient.current.connected) {
-        stompClient.current.send('/app/inserirConsulta', {}, JSON.stringify({idFila: 1, idConsulta:2}));
-      } else {
+    const inserirPacienteFila = (e) => {
+        for(let c = 0; c < fila.consultas.length; c++) {
+            if(fila.consultas[c].idConsulta == e.target.value) {
+                console.log('Esse id já está inserido na fila.');
+                return false;
+            }
+        }
+
+        if (stompClient.current && stompClient.current.connected) {
+        stompClient.current.send('/app/inserirConsulta', {}, JSON.stringify({idFila: fila.idFila, idConsulta: e.target.value}));
+        } else {
         console.error('Conexão STOMP não estabelecida.');
-      }
+        }
     };
 
     useEffect(() => {
@@ -70,9 +77,15 @@ const TelaAtendente = () => {
         buscarConsultas();
     }, []);
 
-    useEffect(() => {
-        console.log(fila);
-    }, [fila]);
+    const inserirPacientes = () => {
+        if(fila) {
+            return fila.consultas.map((consulta) => {
+                return <li className="paciente_atual" key={consulta.idConsulta}>{consulta.paciente.nome} <span>Num</span></li>
+            })
+        } else {
+            return <span>Carregando...</span>
+        }
+    }
 
     return(
         <>
@@ -81,18 +94,12 @@ const TelaAtendente = () => {
                 <div id="visualizacao_fila">
                     <h2>Fila atual</h2>
                     <ul className="nome_pacientes">
-                    {
-                    fila
-                        ?
-                    fila.consultas.map((consulta) => {return <li key={consulta.idConsulta}>{consulta.paciente.nome} <span>{}</span></li>})
-                        :
-                    <span>Carregando...</span>
-                    }
+                    {inserirPacientes()}
                     </ul>
 
                     <div className="caixa__Botoes">
                         <button onClick={buscarFila}>Atualizar fila</button>
-                        <button onClick={() => {console.log('Paciente passado')}}>Passar paciente na fila</button>
+                        <button onClick={passarPacienteFila}>Passar paciente na fila</button>
                     </div>
                 </div>
                 <div id="visualizacao_pacientes">
@@ -117,7 +124,7 @@ const TelaAtendente = () => {
                                             <td>{consulta.paciente.nome}</td>
                                             <td>{consulta.tipoConsulta}</td>
                                             <td>{horarioConsulta(consulta.dataHorarioConsulta)}</td>
-                                            <td><button onClick={inserirPacienteFila}>Inserir na fila</button></td>
+                                            <td><button onClick={inserirPacienteFila} value={consulta.idConsulta}>Inserir na fila</button></td>
                                     </tr>})
 
                             :
