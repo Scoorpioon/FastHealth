@@ -48,6 +48,18 @@ GET /consultas/buscarConsultas/{data} - Busca consultas específicas por data, n
 GET /api/fila/encontrar/{data} - Busca a fila específica da data informada, no formato YYYY-MM-DD
 ```
 
+## URLs
+O Front-end possui os seguintes caminhos:
+
+```markdown
+/ - Página inicial 
+
+/painelDoAtendente - Tela de gerenciamento da fila do dia atual, para os atendentes.
+
+/fila/{data} - Tela da fila do dia atual, no qual pode ser acessada pelos usuários que possuem cadastro na fila (em desenvolvimento)
+```
+
+
 ## Authentication
 A API utiliza autenticação para controlar permissões. No entanto, atualmente está em desenvolvimento e não funcionando devidamente.
 
