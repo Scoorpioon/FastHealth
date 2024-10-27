@@ -1,0 +1,46 @@
+@import 'General.scss';
+
+#secao__Principal {
+    @include secao;
+
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    #principal {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+
+        text-align: center;
+
+        position: absolute;
+
+        width: 100.9vw;
+        height: 575px;
+
+        h2 {
+            font-size: 2.6em;
+        }
+
+        span {
+            font-size: 1.4em;
+            color: $corPrincipal;
+        }
+
+        .botoes {
+            display: flex;
+            width: 300px;
+            justify-content: space-between;
+
+            a {
+                @include botao;
+
+                border-radius: 4px;
+            }
+        }
+    }
+}

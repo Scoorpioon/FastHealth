@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Stomp } from '@stomp/stompjs';
+import GerarSenhaAleatoria from '../Funcs/GerarSenhaAleatoria';
 import horarioConsulta from '../Funcs/FormatarHorario';
 import SockJS from 'sockjs-client/dist/sockjs';
 import Header from '../../Header';
@@ -8,6 +9,7 @@ import '../../../Styles/TelaAtendente.scss';
 
 const TelaAtendente = () => {
     const [consultas, setConsultas] = useState();
+    const [senhas, setSenhas] = useState([]);
     const [fila, setFila] = useState();
     const stompClient = useRef(null);
   
@@ -22,6 +24,9 @@ const TelaAtendente = () => {
           const updatedFila = JSON.parse(message.body);
           setFila(updatedFila);
         });
+
+        buscarFila();
+
       }, (error) => {
         console.error('Erro ao conectar:', error);
       });
@@ -52,6 +57,8 @@ const TelaAtendente = () => {
   
     // Função para inserir uma nova consulta na fila
     const inserirPacienteFila = (e) => {
+        setSenhas(...senhas, [GerarSenhaAleatoria()]);
+
         for(let c = 0; c < fila.consultas.length; c++) {
             if(fila.consultas[c].idConsulta == e.target.value) {
                 console.log('Esse id já está inserido na fila.');
@@ -60,9 +67,9 @@ const TelaAtendente = () => {
         }
 
         if (stompClient.current && stompClient.current.connected) {
-        stompClient.current.send('/app/inserirConsulta', {}, JSON.stringify({idFila: fila.idFila, idConsulta: e.target.value}));
+          stompClient.current.send('/app/inserirConsulta', {}, JSON.stringify({idFila: fila.idFila, idConsulta: e.target.value}));
         } else {
-        console.error('Conexão STOMP não estabelecida.');
+          console.error('Conexão STOMP não estabelecida.');
         }
     };
 
@@ -80,7 +87,7 @@ const TelaAtendente = () => {
     const inserirPacientes = () => {
         if(fila) {
             return fila.consultas.map((consulta) => {
-                return <li className="paciente_atual" key={consulta.idConsulta}>{consulta.paciente.nome} <span>Num</span></li>
+                return <li className="paciente_atual" key={consulta.idConsulta}>{consulta.paciente.nome} <span>{senhas[0]}</span></li>
             })
         } else {
             return <span>Carregando...</span>

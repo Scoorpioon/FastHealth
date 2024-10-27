@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bluefenix.api.Models.Atendente;
 import com.bluefenix.api.Models.Paciente;
 import com.bluefenix.api.Models.Usuario;
+import com.bluefenix.api.Models.DTOs.SessaoPacienteDTO;
 import com.bluefenix.api.Models.DTOs.SecurityDTOs.CredentialsDTO;
 import com.bluefenix.api.Models.DTOs.SecurityDTOs.RegistroAtendenteDTO;
 import com.bluefenix.api.Models.DTOs.SecurityDTOs.RegistroPacienteDTO;
@@ -21,13 +22,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import jakarta.validation.Valid;
 
-// Estou estudando sobre autenticação no Spring só agora. Eu acho que não necessariamente precisamos criar um controller somente para fazer autenticação, podemos inserir a autenticação em cada controller de usuário, como no de paciente e no de atendednte. Mas, por enquanto, vamo deixar assim mesmo. É bom que até organiza e deixa mais legível para eu ir relendo o código e estudando mais profundamente o conteúdo.
+// Esse é o nosso controller
 
 @RestController
 @RequestMapping("/auth")
@@ -110,35 +112,24 @@ public class AuthenticationController {
 
     @PostMapping("/paciente/login")
     public ResponseEntity<?> loginPaciente(@RequestBody @Valid CredentialsDTO dados) {
-        var emailESenha = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
+        /* var emailESenha = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha()); */
 
-        System.out.println("Variável emailESenha" + emailESenha);
+        Paciente pacienteEncontrado = this.repositorioPaciente.findByEmail(dados.email());
 
-/*         if(dados.email() != null && dados.senha() != null) {
-            if(this.repositorioPaciente.findByEmail(dados.email()) != null) {
-                if(dados.senha() == this.repositorioPaciente.findByEmail(dados.email()).getPassword()) {
-                   var token = tokenService.gerarToken((Usuario) )
+        if(dados.email() != null && dados.senha() != null) {
+            if(pacienteEncontrado != null) {
+                if(dados.senha().equals(pacienteEncontrado.getSenha())) {
+                   var token = tokenService.gerarToken((Usuario) pacienteEncontrado);
+                    System.out.println(token);
+
+                   return ResponseEntity.ok(new SessaoPacienteDTO(pacienteEncontrado.getNome(), pacienteEncontrado.getNumCarteirinha()));
+                } else {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário ou senha inválidos");
                 }
             }
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Necessario preeencher ambos os campos");
-        } */
-
-        /* Authentication autenticacao = null;
-        try {
-            autenticacao = this.authenticationManager.authenticate(emailESenha);
-
-            System.out.println(" ");
-            System.out.println("Credenciais: " + autenticacao);
-            System.out.println(" ");
-
-        } catch(Exception error) {
-            System.out.println("Ocorreu o seguinte erro ao tentar fazer login: " + error);
-
-            if(error instanceof BadCredentialsException) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("E-mail ou senha invalidos. Vaza daqui");
-            }
-        } */
+        }
 
         return ResponseEntity.ok().build();
     }

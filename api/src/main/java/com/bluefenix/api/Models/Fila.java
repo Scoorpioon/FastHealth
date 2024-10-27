@@ -45,10 +45,6 @@ public class Fila {
     @OneToMany(mappedBy = "fila", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("fila")
     private List<Consulta> consultas = new ArrayList<>();
-
-    @OneToMany(mappedBy = "fila", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonIgnoreProperties
-    private List<String> pacientesPassados = new ArrayList<>();
     
     public Fila(LocalDate dataFila) {
         this.dataFila = dataFila;
