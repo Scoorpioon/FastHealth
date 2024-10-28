@@ -37,7 +37,7 @@ const TelaLogin = () => {
     
             console.log('Sessão armazenada: ' + localStorage.getItem('paciente'));
 
-            window.location.href = '/';
+            window.location.href = '/paciente/consultas';
         }
     }
 
@@ -50,7 +50,7 @@ const TelaLogin = () => {
             [name]: value
         });
 
-        console.log(dadosLogin)
+        // console.log(dadosLogin);
     }
 
     return(

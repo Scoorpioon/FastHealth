@@ -12,7 +12,7 @@ const Landing = () => {
 
                     <div className="botoes">
                         <a href="#">Sou paciente</a>
-                        <a href="#">Sou atendente</a>
+                        <a href="/login/atendente">Sou atendente</a>
                     </div>
                 </div>
             </main>

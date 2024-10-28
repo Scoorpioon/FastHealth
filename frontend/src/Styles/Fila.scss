@@ -18,67 +18,114 @@
             color: $corPrincipal;
         }
     }
-}
 
-#listas {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-
-    position: relative;
+    #listas {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
     
-    width: 88%;
-
-    h2 {
         position: relative;
-        font-size: 3.3em;
-        margin: 20px 0;
-
-        &::after {
-            content: '';
-
-            display: block;
+        
+        width: 88%;
+    
+        h2 {
             position: relative;
-            top: 8px;
-
-            width: 100%;
-            height: 2px;
-
-            background-color: rgb(184, 184, 184);
-        }
-    }
-
-    .nome_pacientes /* (lista dos pacientes) */ {
-        list-style-type: none;
+            font-size: 3.3em;
+            margin: 20px 0;
     
-        li {
-            transition: 300ms;
+            &::after {
+                content: '';
     
-            font-weight: 500;
-            font-size: 2.5em;
-            
-            &:nth-child(1) {
-                font-size: 2.9em;
+                display: block;
+                position: relative;
+                top: 8px;
+    
+                width: 100%;
+                height: 2px;
+    
+                background-color: rgb(184, 184, 184);
             }
         }
-    }
 
-    .pacientes_passados {
-        list-style-type: none;
-        
-        font-size: 1.8em;
-
-        position: absolute;
-        right: 16px;
-        top: 18px;
-
-        h2 {
-            font-size: 1.1em;
+        .dados {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            
+            position: absolute;
+            left: 20px;
+            top: 50%;
+    
+            span {
+                font-size: 1.5em;
+                font-weight: bold;
+            }
         }
+
+        .botao_dados {
+            background-color: $corPrincipal;
+            color: white;
+            font-weight: bold;
+            border-radius: 60px;
+            text-align: center;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            position: absolute;
+            left: 0;
+        }
+    
+        .nome_pacientes /* (lista dos pacientes) */ {
+            list-style-type: none;
+        
+            li {
+                transition: 300ms;
+        
+                font-weight: 500;
+                font-size: 2.5em;
+                
+                &:nth-child(1) {
+                    font-size: 2.9em;
+                }
+            }
+        }
+
+        #passados {
+            /* border: 1px solid red; */
+            position: absolute;
+
+            right: 0;
+            top: 26px;
+            
+            h2 {
+                font-size: 2em;
+            }
+            
+            .pacientes_passados {
+                list-style-type: none;
+                
+                font-size: 1.8em;
+        
+                right: 16px;
+                top: 18px;
+        
+            }
+
+/*             &::before {
+                content: '';
+                position: absolute;
+                width: 2px;
+                height: 100%;
+                background-color: rgb(204, 204, 204);
+                left: -120px;
+                top: 20px;
+            } */
+        }
+    
     }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 1465px) {
     header {
         margin-bottom: 30px;
     }
@@ -90,21 +137,131 @@
             }
 
             li {
-                font-size: 1.3rem;
+                font-size: 1.6rem;
             }
         }
 
-        #passados {
+        #listas {
+            .dados {
+                width: 18%;
+                left: 0;
+            }
 
+            #fila {
+                h2 {
+                    font-size: 2.5em;
+                }
+
+                .nome_pacientes {
+                    li {
+                        font-size: 2.1em;
+                    }
+                }
+            }
+            
+            #passados {
+                position: relative;
+                top: 11px;
+
+                .pacientes_passados {
+                    position: relative;
+                    right: 0;
+                    top: 0;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1130px) {
+    header {
+        margin-bottom: 30px;
+    }
+
+    #secao__Fila {
+        #fila, #passados {
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            li {
+                font-size: 1.5rem;
+            }
         }
 
         #listas {
-            .pacientes_passados {
-                position: relative;
+            #fila {
+                h2 {
+                    font-size: 2.2em;
+                }
 
+                .nome_pacientes {
+                    li {
+                        font-size: 1.8em;
+                    }
+                }
+            }
+            
+            #passados {
                 position: relative;
-                right: 0;
-                top: 0;
+                top: 12px;
+                
+                h2 {
+                    font-size: 1.6em;
+                }
+
+                .pacientes_passados {
+                    position: relative;
+                    right: 0;
+                    top: 0;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 695px) {
+    header {
+        margin-bottom: 30px;
+    }
+
+    #secao__Fila {
+        #fila, #passados {
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            li {
+                font-size: 1.5rem;
+            }
+        }
+
+        #listas {
+            #fila {
+                h2 {
+                    font-size: 2.2em;
+                }
+
+                .nome_pacientes {
+                    li {
+                        font-size: 1.8em;
+                    }
+                }
+            }
+            
+            #passados {
+                position: relative;
+                top: 24px;
+                
+                h2 {
+                    font-size: 1.6em;
+                }
+
+                .pacientes_passados {
+                    position: relative;
+                    right: 0;
+                    top: 0;
+                }
             }
         }
     }

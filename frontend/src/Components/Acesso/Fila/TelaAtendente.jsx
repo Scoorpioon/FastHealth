@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { Stomp } from '@stomp/stompjs';
 import GerarSenhaAleatoria from '../Funcs/GerarSenhaAleatoria';
+import PacientesPassados from '../../../Context/BancoPacientes';
 import horarioConsulta from '../Funcs/FormatarHorario';
 import SockJS from 'sockjs-client/dist/sockjs';
 import Header from '../../Header';
@@ -8,10 +9,13 @@ import axios from 'axios';
 import '../../../Styles/TelaAtendente.scss';
 
 const TelaAtendente = () => {
+    const {pacientes, setPacientes} = useContext(PacientesPassados);
     const [consultas, setConsultas] = useState();
     const [senhas, setSenhas] = useState([]);
     const [fila, setFila] = useState();
+    const botaoInserir = useRef(null);
     const stompClient = useRef(null);
+    const dataFila = [2024, 8, 3];
   
     useEffect(() => {
       const socket = new SockJS('http://localhost:8080/ws');
@@ -30,6 +34,8 @@ const TelaAtendente = () => {
       }, (error) => {
         console.error('Erro ao conectar:', error);
       });
+
+      console.log(botaoInserir);
   
       return () => {
         if (stompClient.current) {
@@ -40,7 +46,7 @@ const TelaAtendente = () => {
   
     const buscarFila = (data) => {
       if (stompClient.current && stompClient.current.connected) {
-        stompClient.current.send('/app/retornarFilaPorData', {}, JSON.stringify({"dataFila": [2024, 8, 3]}));
+        stompClient.current.send('/app/retornarFilaPorData', {}, JSON.stringify({"dataFila": dataFila}));
       } else {
         console.error('Não deu pra estabalecer a conexão do STOMP por algum motivo. Se vira ai pra achar');
       }
@@ -50,6 +56,10 @@ const TelaAtendente = () => {
     const passarPacienteFila = () => {
       if(stompClient.current && stompClient.current.connected) {
         stompClient.current.send('/app/removerConsulta', {}, JSON.stringify({ idFila: fila.idFila, idConsulta: fila.consultas[0].idConsulta }));
+
+        pacientes.push(fila.consultas[0].paciente.nome);
+        console.log('Paciente passado: ' + pacientes);
+
       } else {
         console.error('Não deu pra estabalecer a conexão do STOMP por algum motivo. Se vira ai pra achar');
       }
@@ -62,12 +72,18 @@ const TelaAtendente = () => {
         for(let c = 0; c < fila.consultas.length; c++) {
             if(fila.consultas[c].idConsulta == e.target.value) {
                 console.log('Esse id já está inserido na fila.');
+
+                e.target.disabled = true;
+                e.target.classList.add('desabilitado');
+                
                 return false;
             }
         }
 
         if (stompClient.current && stompClient.current.connected) {
           stompClient.current.send('/app/inserirConsulta', {}, JSON.stringify({idFila: fila.idFila, idConsulta: e.target.value}));
+
+          e.target.disabled = true;
         } else {
           console.error('Conexão STOMP não estabelecida.');
         }
@@ -86,8 +102,12 @@ const TelaAtendente = () => {
 
     const inserirPacientes = () => {
         if(fila) {
-            return fila.consultas.map((consulta) => {
-                return <li className="paciente_atual" key={consulta.idConsulta}>{consulta.paciente.nome} <span>{senhas[0]}</span></li>
+            return fila.consultas.map((consulta, pos) => {
+              if(pos == 0) {
+                return <li className="paciente_atual" key={consulta.idConsulta}><strong>{consulta.paciente.nome}</strong> - Atual</li>
+              } else {
+                return <li key={consulta.idConsulta}>{consulta.paciente.nome}</li>
+              }
             })
         } else {
             return <span>Carregando...</span>
@@ -99,7 +119,7 @@ const TelaAtendente = () => {
             <Header logado={true} />
             <section id="secao__Atendente">
                 <div id="visualizacao_fila">
-                    <h2>Fila atual</h2>
+                    <h2>Fila de hoje</h2>
                     <ul className="nome_pacientes">
                     {inserirPacientes()}
                     </ul>
@@ -131,7 +151,10 @@ const TelaAtendente = () => {
                                             <td>{consulta.paciente.nome}</td>
                                             <td>{consulta.tipoConsulta}</td>
                                             <td>{horarioConsulta(consulta.dataHorarioConsulta)}</td>
-                                            <td><button onClick={inserirPacienteFila} value={consulta.idConsulta}>Inserir na fila</button></td>
+                                            <td><button 
+                                            onClick={inserirPacienteFila} 
+                                            value={consulta.idConsulta}
+                                            >Inserir na fila</button></td>
                                     </tr>})
 
                             :

@@ -1,14 +1,17 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { Stomp } from '@stomp/stompjs';
+import PacientesPassados from '../../../Context/BancoPacientes';
 import SockJS from 'sockjs-client/dist/sockjs';
 import '../../../Styles/Fila.scss';
 
 const Fila = () => {
+  const {pacientes} = useContext(PacientesPassados);
   const { dataFila } = useParams();
   const [infoUsuario, setInfoUsuario] = useState(JSON.parse(localStorage.getItem('paciente')));
-  const [fila, setFila] = useState();
   const [nomePacientesPassados, setNomePacientesPassados] = useState([]);
+  const [posicao, setPosicao] = useState();
+  const [fila, setFila] = useState();
   const stompClient = useRef(null);
   const audio = new Audio('/SomFila.mp3');
 
@@ -26,8 +29,6 @@ const Fila = () => {
       }
     });
 
-    console.log(infoUsuario);
-
     return () => {
       if (stompClient) {
         stompClient.current.disconnect();
@@ -35,11 +36,13 @@ const Fila = () => {
     };
   }, []); // Esse bonitão aqui desmonta tudo quando o componente for fechado
 
+  useEffect(() => {
+    console.log(pacientes);
+  }, [pacientes]);
+
   const listarPacientes = () => {
     if(fila) {
-      return fila.consultas.map((consulta) => {
-        console.log(infoUsuario.data.nome == consulta.paciente.nome);
-
+      return fila.consultas.map((consulta, pos) => {
         if(consulta.paciente.nome == infoUsuario.data.nome) {
           return(
           <li key={consulta.idConsulta} value="usuario" className="nome_usuario">
@@ -61,9 +64,35 @@ const Fila = () => {
     }
   }
 
+  const pegarPosicao = () => {
+    if(fila) {
+      console.log(JSON.parse(localStorage.getItem('paciente')).data);
+      fila.consultas.map((consulta, pos) => {
+        if(consulta.paciente.nome == JSON.parse(localStorage.getItem('paciente')).data.nome) {
+          setPosicao(pos + 1);
+        }
+      })
+    }
+  }
+
+  useEffect(() => {
+    pegarPosicao();
+  }, [fila]);
+
+  useEffect(() => {
+    console.log(window.innerWidth <= 1340);
+  }, [window.innerWidth]);
+
   return (
     <section id="secao__Fila">
       <div id="listas">
+        {window.screen.width > 1340 ? <div className="dados">
+          <span>Tempo médio de atendimento: </span>
+          <span>Posição na fila: {posicao}</span>
+        </div>
+        :
+        <span className="botao_dados">i</span>
+        }
         <div id="fila">
           <h2>Fila de atendimento</h2>
           <ul className="nome_pacientes">
