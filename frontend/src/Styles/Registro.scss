@@ -14,7 +14,7 @@
         .caixa_Botoes {
             justify-content: center;
 
-            input[type="submit"] {
+            input[type="submit"], a {
                 background-color: $corPrincipal;
                 color: white;
             }

@@ -70,12 +70,14 @@ const Fila = () => {
             {listarPacientes()}
           </ul>
         </div>
-        <ul className="pacientes_passados">
+        <div id="passados">
           <h2>Pacientes anteriores</h2>
-          <li>Gabriel</li>
-          <li>Jhonata</li>
-          <li>Felippe</li>
-        </ul>
+          <ul className="pacientes_passados">
+            <li>Gabriel</li>
+            <li>Jhonata</li>
+            <li>Felippe</li>
+          </ul>
+        </div>
       </div>
     </section>
   );

@@ -40,15 +40,14 @@ const TelaLoginAtendente = () => {
                     <input type="password" placeholder="Sua senha" name="senha" id="senha" onChange={handleAlteracaoDados} />
                 </div>
 
-{/*                 <div className="caixa_Opcoes">
+                <div className="caixa_Opcoes">
                     <div className="checkbox">
-                        <input type="checkbox" name="manterLogin" id="manterLogin" />
-                        <label htmlFor="manterLogin">Manter-se conectado</label>
+                        <span className="aviso_atendente">Em caso de esquecimento de credenciais, contate a equipe responsável.</span>
                     </div>
-                </div> */}
+                </div>
 
                 <div className="caixa_Botoes">
-                    <input type="submit" value="Logar" />
+                    <input type="submit" value="Logar" style={{color: 'white', backgroundColor: 'purple'}} />
                 </div>
             </section>
         </form>

@@ -1,6 +1,8 @@
 package com.bluefenix.api.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,16 +35,16 @@ public class PacienteController {
 
     @PostMapping("/criar")
     @Validated
-    public ResponseEntity<Void> criarPaciente(@RequestBody Paciente informacoesRecebidasDoPaciente) {
+    public ResponseEntity<?> criarPaciente(@RequestBody Paciente informacoesRecebidasDoPaciente) {
         try {
             this.pacienteServicos.criarConta(informacoesRecebidasDoPaciente);
     
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(informacoesRecebidasDoPaciente.getIdPaciente()).toUri();
     
             return ResponseEntity.created(uri).build();
-        } catch(Exception error) {
-            System.out.println("Deu um erro ao tentar criar o paciente: " + error);
-            return ResponseEntity.badRequest().build();
+        } catch(DataIntegrityViolationException erro) {
+            System.out.println("Alguma informação já está cadastrada: " + erro);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Informação já cadastrada");
         }
     }
 

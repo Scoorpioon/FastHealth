@@ -1,21 +1,44 @@
-import {useState} from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios';
 import '../../../Styles/Login.scss';
 
 const TelaLogin = () => {
     const [dadosLogin, setDadosLogin] = useState({});
+    const mensagemErro = useRef(null);
     
-    const handleSubmit = async (e) => {
+    const handleLogar = async (e) => {
         e.preventDefault();
-        const response = await axios.post('http://localhost:8080/auth/paciente/login', dadosLogin);
 
-        if(response.status == 401) {
-            console.log('Informações inválidas');
-        } else {
-            localStorage.setItem('paciente', JSON.stringify(response));
+        const res = await axios.post('http://localhost:8080/auth/paciente/login', dadosLogin).catch((erro) => {    
+            if(erro.status == 400) {
+                console.log('Usuário não encontrado');
+
+                if(mensagemErro.current) {
+                    mensagemErro.current.style.display = 'block';
+                    mensagemErro.current.innerHTML = 'E-mail não encontrado';
+                }
+
+            } else if(erro.status == 401) {
+                console.log('Informações inválidas');
+    
+                if(mensagemErro.current) {
+                    mensagemErro.current.style.display = 'block';
+                    mensagemErro.current.innerHTML = 'Usuário e/ou senha inválidos';
+                }
+            }
+        });
+
+        if(res) {
+            localStorage.setItem('paciente', JSON.stringify(res));
+                    
+            if(mensagemErro.current) {
+                mensagemErro.current.style.display = 'none';
+            }
+    
+            console.log('Sessão armazenada: ' + localStorage.getItem('paciente'));
+
+            window.location.href = '/';
         }
-
-        console.log('Sessão armazenada: ' + localStorage.getItem('paciente'));
     }
 
     const handleAlteracaoDados = (e) => {
@@ -32,7 +55,7 @@ const TelaLogin = () => {
 
     return(
         <main id="secao__Login">
-            <form method="POST" onSubmit={handleSubmit} id="caixa__Login">
+            <form method="POST" onSubmit={handleLogar} id="caixa__Login">
                 <h2>Logar-se</h2>
 
                 <div className="caixa_Campos">
@@ -49,9 +72,11 @@ const TelaLogin = () => {
                 </div>
 
                 <div className="caixa_Botoes">
-                    <a href="#">Cadastrar-se</a>
+                    <a href="/registro/paciente">Cadastrar-se</a>
                     <input type="submit" value="Logar" />
                 </div>
+
+                <span className="erro" ref={mensagemErro}></span>
             </form>
         </main>
     );

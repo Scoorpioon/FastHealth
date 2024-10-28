@@ -124,13 +124,15 @@ public class AuthenticationController {
 
                    return ResponseEntity.ok(new SessaoPacienteDTO(pacienteEncontrado.getNome(), pacienteEncontrado.getNumCarteirinha()));
                 } else {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário ou senha inválidos");
+                    System.out.println("Usuário/senha inválidos");
+
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário ou senha inválidos");
                 }
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário não encontrado");
             }
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Necessario preeencher ambos os campos");
         }
-
-        return ResponseEntity.ok().build();
     }
 }

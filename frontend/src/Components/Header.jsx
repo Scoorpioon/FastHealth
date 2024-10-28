@@ -11,13 +11,12 @@ const Header = (props) => {
             <span className="botao_desconectar">Sair</span> 
             : 
             <div className="caixa_Botoes">
-                <a href="#">Cadastro</a>
-                <a href="#">Entrar</a>
+                <a href="/registro/paciente">Cadastro</a>
+                <a href="/login/paciente">Entrar</a>
             </div>
             }
         </header>
     );
 }
-
 
 export default Header;

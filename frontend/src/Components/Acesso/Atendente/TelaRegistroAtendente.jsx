@@ -20,10 +20,6 @@ const TelaRegistroAtendente = () => {
         });
     }
 
-    useEffect(() => {
-        console.log(dadosFormulario);
-    }, [dadosFormulario]);
-
     return(
         <form method="POST" onSubmit={handleSubmit} id="secao__Login">
             <section id="caixa__Login">
@@ -44,7 +40,7 @@ const TelaRegistroAtendente = () => {
                 </div>
 
                 <div className="caixa_Botoes">
-                    <input type="submit" value="Cadastrar-se" />
+                    <input type="submit" value="Cadastrar-se" style={{color: 'white', backgroundColor: 'rgb(81, 0, 157)'}} />
                 </div>
             </section>
         </form>

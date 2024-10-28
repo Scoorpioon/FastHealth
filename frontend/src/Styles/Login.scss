@@ -30,7 +30,7 @@
             flex-direction: column;
             gap: 5px;
 
-            width: 425px;
+            width: 55%;
 
             input[type="email"], input[type="password"], input[type="text"], input[type="number"] {
                 background-color: rgb(227, 227, 227);
@@ -50,6 +50,10 @@
             .checkbox {
                 display: flex;
                 gap: 8px;
+            }
+
+            .aviso_atendente {
+                color: rgb(81, 81, 81);
             }
         }
 
@@ -94,6 +98,48 @@
                     background-color: rgb(196, 196, 196);
                 }
             }
+        }
+
+        .erro {
+            color: red;
+            display: none;
+        }
+
+        .erroCaixa {
+            border: 1px solid red;
+        }
+    }
+}
+
+@media (max-width: 1342px) {
+    #secao__Login {
+        #caixa__Login {
+            width: 100%;
+
+            .caixa_Campos {
+                width: 75%;
+            }
+
+            .caixa_Botoes {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                
+                width: 75%;
+                height: 105px;
+
+                input[type="submit"], a {
+                    padding: 15px 0;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 1343px) {
+    #secao__Login {
+        #caixa__Login {
+            width: 65%;
         }
     }
 }
