@@ -7,11 +7,10 @@ O código foi desenvolvido inicialmente como um trabalho universitário da Unive
 ## Conteúdos
 
 - [Instalação](#instalação)
-- [Configuração](#configuração)
 - [Uso](#uso)
 - [Endpoints da API](#endpoints)
 - [URLs](#urls)
-- [Auteenticação](#autenticação)
+- [Autenticação](#autenticação)
 - [Banco de dados](#bd)
 - [Contribuição](#contribuicao)
 
@@ -53,6 +52,10 @@ O Front-end possui os seguintes caminhos:
 
 ```markdown
 / - Página inicial 
+
+/login/paciente - Página de login do paciente
+
+/login/atendente - Página de login do atendente
 
 /painelDoAtendente - Tela de gerenciamento da fila do dia atual, para os atendentes.
 
