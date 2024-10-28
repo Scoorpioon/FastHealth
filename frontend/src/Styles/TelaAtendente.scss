@@ -61,7 +61,9 @@
     }
 
     #visualizacao_pacientes {
-
+        display: flex;
+        gap: 16px;
+        flex-direction: column;
     }
 }
 

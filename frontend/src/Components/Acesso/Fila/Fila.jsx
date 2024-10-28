@@ -25,7 +25,7 @@ const Fila = () => {
       });
 
       if(stompClient.current && stompClient.current.connected) {
-        stompClient.current.send('/app/retornarFilaPorData', {}, JSON.stringify({"dataFila": [2024, 8, 3]}));
+        stompClient.current.send('/app/retornarFilaPorData', {}, JSON.stringify({"dataFila": dataFila}));
       }
     });
 
@@ -36,12 +36,12 @@ const Fila = () => {
     };
   }, []); // Esse bonitão aqui desmonta tudo quando o componente for fechado
 
-  useEffect(() => {
-    console.log(pacientes);
-  }, [pacientes]);
-
   const listarPacientes = () => {
     if(fila) {
+      if(fila.consultas.length == 0) {
+        return <span className="sem_pacientes">Sem pacientes em espera</span>
+      }
+      
       return fila.consultas.map((consulta, pos) => {
         if(consulta.paciente.nome == infoUsuario.data.nome) {
           return(
@@ -77,6 +77,8 @@ const Fila = () => {
 
   useEffect(() => {
     pegarPosicao();
+
+    audio.play();
   }, [fila]);
 
   useEffect(() => {
@@ -87,7 +89,7 @@ const Fila = () => {
     <section id="secao__Fila">
       <div id="listas">
         {window.screen.width > 1340 ? <div className="dados">
-          <span>Tempo médio de atendimento: </span>
+          <span>Tempo médio de atendimento: 20:00</span>
           <span>Posição na fila: {posicao}</span>
         </div>
         :
@@ -102,9 +104,7 @@ const Fila = () => {
         <div id="passados">
           <h2>Pacientes anteriores</h2>
           <ul className="pacientes_passados">
-            <li>Gabriel</li>
-            <li>Jhonata</li>
-            <li>Felippe</li>
+            <li>...</li>
           </ul>
         </div>
       </div>

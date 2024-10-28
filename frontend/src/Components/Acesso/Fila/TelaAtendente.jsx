@@ -15,7 +15,7 @@ const TelaAtendente = () => {
     const [fila, setFila] = useState();
     const botaoInserir = useRef(null);
     const stompClient = useRef(null);
-    const dataFila = [2024, 8, 3];
+    const dataFila = [2024, 11, 1];
   
     useEffect(() => {
       const socket = new SockJS('http://localhost:8080/ws');
@@ -91,7 +91,7 @@ const TelaAtendente = () => {
 
     useEffect(() => {
         const buscarConsultas = async () => {
-            const res = await axios.get('http://localhost:8080/consultas/buscarConsultas/2024-08-03');
+            const res = await axios.get(`http://localhost:8080/consultas/buscarConsultas/2024-11-01`);
     
             setConsultas(res);
             console.log(res.data);
@@ -99,6 +99,31 @@ const TelaAtendente = () => {
 
         buscarConsultas();
     }, []);
+
+    const pacientesDoDia = () => {
+      if(consultas) {
+        return consultas.data.map((consulta) => {
+          return(
+          <tr key={consulta.idConsulta}>
+            <td>{consulta.idConsulta}</td>
+            <td>{consulta.paciente.nome}</td>
+            <td>{consulta.tipoConsulta}</td>
+            <td>{horarioConsulta(consulta.dataHorarioConsulta)}</td>
+            <td><button 
+            onClick={inserirPacienteFila} 
+            value={consulta.idConsulta}
+            >Inserir na fila</button></td>
+          </tr>)})
+      } else {
+        return(
+          <tr>
+            <td>
+                <span>Carregando pacientes...</span>
+            </td>
+          </tr>
+        )
+      }
+    }
 
     const inserirPacientes = () => {
         if(fila) {
@@ -113,6 +138,12 @@ const TelaAtendente = () => {
             return <span>Carregando...</span>
         }
     }
+
+    useEffect(() => {
+      if(consultas) {
+        console.log(consultas);
+      }
+    });
 
     return(
         <>
@@ -130,6 +161,7 @@ const TelaAtendente = () => {
                     </div>
                 </div>
                 <div id="visualizacao_pacientes">
+                  <h2>Pacientes para o dia de hoje: {dataFila[2]}/{dataFila[1]}/{dataFila[0]}</h2>
                     <table className="tabela_consultas">
                         <thead>
                             <tr>
@@ -140,31 +172,7 @@ const TelaAtendente = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {
-                            consultas 
-
-                            ?
-
-                            consultas.data.map((consulta) => {
-                                return <tr key={consulta.idConsulta}>
-                                            <td>{consulta.idConsulta}</td>
-                                            <td>{consulta.paciente.nome}</td>
-                                            <td>{consulta.tipoConsulta}</td>
-                                            <td>{horarioConsulta(consulta.dataHorarioConsulta)}</td>
-                                            <td><button 
-                                            onClick={inserirPacienteFila} 
-                                            value={consulta.idConsulta}
-                                            >Inserir na fila</button></td>
-                                    </tr>})
-
-                            :
-
-                            <tr>
-                                <td>
-                                    <span>Carregando pacientes...</span>
-                                </td>
-                            </tr>
-                            }
+                            {pacientesDoDia()}
                         </tbody>
                     </table>
                 </div>
