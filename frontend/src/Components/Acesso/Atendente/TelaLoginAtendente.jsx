@@ -7,7 +7,7 @@ const TelaLoginAtendente = () => {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await axios.post('http://localhost:8080/auth/atendente/login', dadosLogin);
+        const res = await axios.post('http://localhost:8080/auth/atendente/login', dadosLogin);
 
         if(response.status == 401) {
             console.log('Informações inválidas');
@@ -15,7 +15,9 @@ const TelaLoginAtendente = () => {
             console.log(`Logado com sucesso. Token gerado: ${response.data.token}`);
         }
 
-        console.log(response);
+        if(res) {
+            window.location.href = '/painelDoAtendente';
+        }
     }
 
     const handleAlteracaoDados = (e) => {

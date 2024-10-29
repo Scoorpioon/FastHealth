@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useContext } from 'react';
+import { BancoPacientes } from '../../../Context/BancoPacientes';
 import { Stomp } from '@stomp/stompjs';
 import GerarSenhaAleatoria from '../Funcs/GerarSenhaAleatoria';
-import PacientesPassados from '../../../Context/BancoPacientes';
 import horarioConsulta from '../Funcs/FormatarHorario';
 import SockJS from 'sockjs-client/dist/sockjs';
 import Header from '../../Header';
@@ -9,7 +9,7 @@ import axios from 'axios';
 import '../../../Styles/TelaAtendente.scss';
 
 const TelaAtendente = () => {
-    const {pacientes, setPacientes} = useContext(PacientesPassados);
+    const {pacientes, setPacientes} = useContext(BancoPacientes);
     const [consultas, setConsultas] = useState();
     const [senhas, setSenhas] = useState([]);
     const [fila, setFila] = useState();
@@ -34,8 +34,6 @@ const TelaAtendente = () => {
       }, (error) => {
         console.error('Erro ao conectar:', error);
       });
-
-      console.log(botaoInserir);
   
       return () => {
         if (stompClient.current) {
@@ -47,6 +45,10 @@ const TelaAtendente = () => {
     const buscarFila = (data) => {
       if (stompClient.current && stompClient.current.connected) {
         stompClient.current.send('/app/retornarFilaPorData', {}, JSON.stringify({"dataFila": dataFila}));
+
+        const novoPaciente = {nome: 'teste' + (pacientes.length + 1)};
+        setPacientes([...pacientes, novoPaciente]);
+
       } else {
         console.error('Não deu pra estabalecer a conexão do STOMP por algum motivo. Se vira ai pra achar');
       }
@@ -58,7 +60,6 @@ const TelaAtendente = () => {
         stompClient.current.send('/app/removerConsulta', {}, JSON.stringify({ idFila: fila.idFila, idConsulta: fila.consultas[0].idConsulta }));
 
         pacientes.push(fila.consultas[0].paciente.nome);
-        console.log('Paciente passado: ' + pacientes);
 
       } else {
         console.error('Não deu pra estabalecer a conexão do STOMP por algum motivo. Se vira ai pra achar');
@@ -138,12 +139,6 @@ const TelaAtendente = () => {
             return <span>Carregando...</span>
         }
     }
-
-    useEffect(() => {
-      if(consultas) {
-        console.log(consultas);
-      }
-    });
 
     return(
         <>

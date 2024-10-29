@@ -1,8 +1,6 @@
-
-
 const GerarSenhaAleatoria = () => {
     const alfabeto = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const numeros = '123456789';
+    const numeros = '0123456789';
     let senha = [];
     let random;
 

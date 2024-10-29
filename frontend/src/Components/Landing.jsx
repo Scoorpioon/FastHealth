@@ -7,8 +7,8 @@ const Landing = () => {
             <Header logado={false} />
             <main id="secao__Principal">
                 <div id="principal">
-                    <h2>Um jeito melhor de aguardar pela sua consulta</h2>
-                    <span>Experimente dançar com os pinguins de tanga</span>
+                    <h2>O melhor jeito de aguardar pela sua consulta</h2>
+                    <span>Visualize a fila diretamente de seu celular, no conforto de sua casa</span>
 
                     <div className="botoes">
                         <a href="#">Sou paciente</a>

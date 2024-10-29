@@ -7,7 +7,9 @@ const TelaRegistroAtendente = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8080/pacientes/criar', dadosFormulario);
+        axios.post('http://localhost:8080/pacientes/criar', dadosFormulario).catch((erro) => {
+            console.log(erro);
+        });
     }
 
     const handleAlteracaoDados = (e) => {

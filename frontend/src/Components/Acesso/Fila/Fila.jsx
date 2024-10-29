@@ -1,15 +1,14 @@
 import { useEffect, useState, useRef, useContext } from 'react';
+import { BancoPacientes } from '../../../Context/BancoPacientes';
 import { useParams } from 'react-router-dom';
 import { Stomp } from '@stomp/stompjs';
-import PacientesPassados from '../../../Context/BancoPacientes';
 import SockJS from 'sockjs-client/dist/sockjs';
 import '../../../Styles/Fila.scss';
 
 const Fila = () => {
-  const {pacientes} = useContext(PacientesPassados);
+  const { pacientes } = useContext(BancoPacientes);
   const { dataFila } = useParams();
   const [infoUsuario, setInfoUsuario] = useState(JSON.parse(localStorage.getItem('paciente')));
-  const [nomePacientesPassados, setNomePacientesPassados] = useState([]);
   const [posicao, setPosicao] = useState();
   const [fila, setFila] = useState();
   const stompClient = useRef(null);
@@ -41,20 +40,18 @@ const Fila = () => {
       if(fila.consultas.length == 0) {
         return <span className="sem_pacientes">Sem pacientes em espera</span>
       }
-      
+
       return fila.consultas.map((consulta, pos) => {
         if(consulta.paciente.nome == infoUsuario.data.nome) {
           return(
           <li key={consulta.idConsulta} value="usuario" className="nome_usuario">
             <span>{consulta.paciente.nome}</span>
-            {/* <span>Num</span> */} <audio src="/SomFila.mp3"></audio>
           </li>
           )
         } else {
           return (
           <li key={consulta.idConsulta}>
             <span>{consulta.paciente.nome}</span>
-            {/* <span>Num</span> */} <audio src="/SomFila.mp3"></audio>
           </li>
           )
         }
@@ -75,15 +72,23 @@ const Fila = () => {
     }
   }
 
+  const pacientesAtendidos = () => {
+    console.log(pacientes);
+
+    if(pacientes.length > 0) {
+      return pacientes.map((paciente) => {
+        return <li><span>{paciente.nome}</span></li>
+      });
+    } else {
+      return <li><span>...</span></li>
+    }
+  }
+
   useEffect(() => {
     pegarPosicao();
 
-    audio.play();
+    /* audio.play(); */
   }, [fila]);
-
-  useEffect(() => {
-    console.log(window.innerWidth <= 1340);
-  }, [window.innerWidth]);
 
   return (
     <section id="secao__Fila">
@@ -104,7 +109,7 @@ const Fila = () => {
         <div id="passados">
           <h2>Pacientes anteriores</h2>
           <ul className="pacientes_passados">
-            <li>...</li>
+            {pacientesAtendidos()}
           </ul>
         </div>
       </div>

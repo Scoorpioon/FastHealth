@@ -1,15 +1,13 @@
 import { createContext, useState } from 'react';
 
-const PacientesPassados = createContext();
+export const BancoPacientes = createContext();
 
-export const BancoPacientes = ({children}) => {
+export const BancoPacientesProvider = ({children}) => {
     const [pacientes, setPacientes] = useState([]);
 
     return(
-        <PacientesPassados.Provider value={{pacientes, setPacientes}}>
+        <BancoPacientes.Provider value={{pacientes, setPacientes}}>
             {children}
-        </PacientesPassados.Provider>
+        </BancoPacientes.Provider>
     );
 }
-
-export default PacientesPassados;
