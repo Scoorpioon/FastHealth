@@ -53,6 +53,10 @@ O Front-end possui os seguintes caminhos:
 ```markdown
 / - Página inicial 
 
+/registro/paciente - Página de cadastro do paciente
+
+/registro/atendente - Página de cadastro do atendente
+
 /login/paciente - Página de login do paciente
 
 /login/atendente - Página de login do atendente
@@ -60,6 +64,8 @@ O Front-end possui os seguintes caminhos:
 /painelDoAtendente - Tela de gerenciamento da fila do dia atual, para os atendentes.
 
 /fila/{data} - Tela da fila do dia atual, no qual pode ser acessada pelos usuários que possuem cadastro na fila (em desenvolvimento)
+
+/consulta/criar - Página do atendente para criação de consultas
 ```
 
 
