@@ -17,14 +17,12 @@ O código foi desenvolvido inicialmente como um trabalho universitário da Unive
 ## Instalação
 
 1. Clone o repositório
-2. 
-```bash
-git clone https://github.com/Scoorpioon/analiseeprojetodesistemas-bluefenix.git
-```
+   ```bash
+   git clone https://github.com/Scoorpioon/analiseeprojetodesistemas-bluefenix.git
+   ```
 
-2. Instale as dependências do React com NPM ou yarn. Esses são os comandos com NPM:
-
-3. ```bash
+2. Instale as dependências do React com NPM ou yarn
+   ```bash
    npm install sass
    npm install @reduxjs/toolkit react-redux
    ``` 
