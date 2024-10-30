@@ -55,7 +55,8 @@ public class ConsultaServices {
             consulta.getDataConsulta(),
             consulta.getDataHorarioConsulta(),
             consulta.getTipoConsulta(),
-            consulta.getPaciente().getIdPaciente()
+            consulta.getPaciente().getIdPaciente(),
+            consulta.getConsultaRealizada()
         );
     } // Eu não lembro pra quê eu fiz uma DTO de consulta, mas algum bom motivo teve kkkkk
 

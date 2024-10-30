@@ -12,6 +12,7 @@ const CriacaoConsultas = () => {
     const minutoConsulta = useRef(null);
     const horaConsulta = useRef(null);
     const erro = useRef(null);
+    const sucesso = useRef(null);
 
     useEffect(() => {
         const requisitarPacientes = async () => {
@@ -75,15 +76,19 @@ const CriacaoConsultas = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        const mensagemErro = erro.current.style;
+        const mensagemSucesso = sucesso.current.style;
         
         if(dados.dataConsulta && dados.dataHorarioConsulta && dados.tipoConsulta && dados.paciente) {
             API.post('/consultas/criar', dados);
 
-            erro.current.style.display = 'none';
+            mensagemSucesso.display = 'block';
+            mensagemErro.display = 'none';
         } else {
             console.log('Algum dado não foi preenchido, a requisição não foi feita.');
 
-            erro.current.style.display = 'block';
+            mensagemErro.display = 'block';
+            mensagemSucesso.display = 'none';
         }
     }
 
@@ -127,6 +132,7 @@ const CriacaoConsultas = () => {
                     <input type="submit" value="Cadastrar consulta" />
 
                     <span className="erro" ref={erro}>Favor, preencha todas as informações para cadastrar a consulta.</span>
+                    <span className="sucesso" ref={sucesso}>Consulta do paciente {dados.nome} marcada com sucesso!</span>
                 </form>
             </section>
         </>

@@ -11,7 +11,7 @@ const Landing = () => {
                     <span>Visualize a fila diretamente de seu celular, no conforto de sua casa</span>
 
                     <div className="botoes">
-                        <a href="#">Sou paciente</a>
+                        <a href="/login/paciente">Sou paciente</a>
                         <a href="/login/atendente">Sou atendente</a>
                     </div>
                 </div>

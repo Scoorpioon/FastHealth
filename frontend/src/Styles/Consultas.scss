@@ -83,5 +83,11 @@
             color: red;
             display: none;
         }
+
+        .sucesso {
+            color: $corPrincipal;
+            font-weight: bold;
+            display: none;
+        }
     }
 }

@@ -10,13 +10,15 @@ public class ConsultaDTO {
     private String tipoConsulta;
     private Long idPaciente;
     private Long idFila;
-    
-    public ConsultaDTO(Long idConsulta, LocalDate dataConsulta, LocalDateTime dataHorarioConsulta, String tipoConsulta, Long idPaciente) {
+    private int consultaRealizada;
+
+    public ConsultaDTO(Long idConsulta, LocalDate dataConsulta, LocalDateTime dataHorarioConsulta, String tipoConsulta, Long idPaciente, int consultaRealizada) {
         this.idConsulta = idConsulta;
         this.dataConsulta = dataConsulta;
         this.dataHorarioConsulta = dataHorarioConsulta;
         this.tipoConsulta = tipoConsulta;
         this.idPaciente = idPaciente;
+        this.consultaRealizada = consultaRealizada;
     }
 
     public Long getIdConsulta() {
@@ -65,5 +67,13 @@ public class ConsultaDTO {
 
     public void setIdFila(Long idFila) {
         this.idFila = idFila;
+    }
+
+    public int getConsultaRealizada() {
+        return consultaRealizada;
+    }
+
+    public void setConsultaRealizada(int consultaRealizada) {
+        this.consultaRealizada = consultaRealizada;
     }
 }

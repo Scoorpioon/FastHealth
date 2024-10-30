@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;
@@ -16,7 +18,8 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-/* @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idConsulta", scope = Consulta.class) */
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "consulta")
 public class Consulta {
     @Id
@@ -32,6 +35,9 @@ public class Consulta {
     @Column(name = "tipo_consulta", length = 16, nullable = false)
     private String tipoConsulta;
 
+    @Column(name = "consulta_realizada", columnDefinition = "BIT")
+    private int consultaRealizada = 0;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_fila")
     private Fila fila;
@@ -40,6 +46,14 @@ public class Consulta {
     @JoinColumn(name = "paciente_id")
     @JsonIgnoreProperties("consultas")
     private Paciente paciente;
+
+    public Consulta(Paciente paciente, Fila fila, LocalDate dataConsulta, LocalDateTime horarioConsulta, String tipoConsulta) {
+        this.paciente = paciente;
+        this.fila = fila;
+        this.dataConsulta = dataConsulta;
+        this.dataHorarioConsulta = horarioConsulta;
+        this.tipoConsulta = tipoConsulta;
+    }
 
     public Long getIdConsulta() {
         return idConsulta;
@@ -71,6 +85,14 @@ public class Consulta {
 
     public void setTipoConsulta(String tipoConsulta) {
         this.tipoConsulta = tipoConsulta;
+    }
+
+    public int getConsultaRealizada() {
+        return consultaRealizada;
+    }
+
+    public void setConsultaRealizada(int consultaRealizada) {
+        this.consultaRealizada = consultaRealizada;
     }
 
     public Fila getFila() {

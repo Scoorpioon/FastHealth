@@ -42,10 +42,10 @@ public class Fila {
 
     // O CascadeType.ALL significa que, quando a fila ser atualizada, as consultas também serão.
     // o orphanRemoval = true significa que, quando uma consulta for removida da lista de consultas de uma fila, ela também será deletada do banco de dados
-    @OneToMany(mappedBy = "fila", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "fila", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("fila")
     private List<Consulta> consultas = new ArrayList<>();
-    
+
     public Fila(LocalDate dataFila) {
         this.dataFila = dataFila;
     }

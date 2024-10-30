@@ -2,6 +2,7 @@ package com.bluefenix.api.Services;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import com.bluefenix.api.Models.Consulta;
@@ -74,10 +75,9 @@ public class FilaServices {
         return filaEncontrada;
     }
 
+    @Modifying
     @Transactional
     public Fila removerPacienteDaFila(Long idConsulta, Long idFila) {
-        System.out.println("Função executada");
-
         Optional<Fila> filaBuscada = repositorioFila.findById(idFila);
         Optional<Consulta> consultaBuscada = repositorioConsulta.findById(idConsulta);
 
@@ -94,8 +94,12 @@ public class FilaServices {
             Hibernate.initialize(filaEncontrada.getConsultas());
             Consulta consultaEncontrada = consultaBuscada.get();
 
-
             filaEncontrada.getConsultas().remove(consultaEncontrada);
+            consultaEncontrada.setFila(null);
+
+            consultaEncontrada.setConsultaRealizada(1);
+
+            repositorioConsulta.save(consultaEncontrada);
             repositorioFila.save(filaEncontrada);
 
             return filaEncontrada;

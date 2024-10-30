@@ -23,7 +23,7 @@ public class WSConfig implements WebSocketMessageBrokerConfigurer {
     // Define os endpoints. Servidor para cliente, cliente para servidor
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/filaWS");
+        config.enableSimpleBroker("/filaWS", "/consultaWS");
         config.setApplicationDestinationPrefixes("/app");
     }
 }

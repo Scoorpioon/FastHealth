@@ -11,6 +11,7 @@ const Fila = () => {
   const [infoUsuario, setInfoUsuario] = useState(JSON.parse(localStorage.getItem('paciente')));
   const [posicao, setPosicao] = useState();
   const [fila, setFila] = useState();
+  const [consultas, setConsultas] = useState();
   const [pacientesAtendidos, setarPacienteAtendido] = useState();
   const stompClient = useRef(null);
   const dispatch = useDispatch();
@@ -23,6 +24,11 @@ const Fila = () => {
     stompClient.current.connect({}, (frame) => {
       stompClient.current.subscribe('/filaWS', (message) => {
         setFila(JSON.parse(message.body));
+        stompClient.current.send('/app/buscarConsultas', {}, JSON.stringify({"dataConsulta": dataFila}));
+      });
+
+      stompClient.current.subscribe('/consultaWS', (message) => {
+        setConsultas(JSON.parse(message.body));
       });
 
       if(stompClient.current && stompClient.current.connected) {
@@ -74,11 +80,15 @@ const Fila = () => {
     }
   }
 
-  const adicionarPacienteAtendido = () => {
-    if(pacientesAtendidos) {
-      console.log('Hellou' + pacientesAtendidos);
-
-      return pacientesAtendidos.map((paciente) => {return <li>{paciente.nome}</li>})
+  const listarPacientesAtendidos = () => {
+    if(consultas) {
+      return consultas.map((consulta) => {
+        if(consulta.consultaRealizada === 1) {
+          return(
+            <li key={consulta.idConsulta}>{consulta.paciente.nome}</li>
+          )
+        }
+      });
     }
   }
 
@@ -94,6 +104,9 @@ const Fila = () => {
 
   }, [fila]);
 
+  useEffect(() => {
+    console.log(consultas);
+  }, [consultas]);
 
   return (
     <section id="secao__Fila">
@@ -114,13 +127,7 @@ const Fila = () => {
         <div id="passados">
           <h2>Pacientes anteriores</h2>
           <ul className="pacientes_passados">
-            {
-              pacientesAtendidos 
-              ?
-              pacientesAtendidos.map((paciente) => {return <li>a</li>})
-              :
-              null
-            }
+            {listarPacientesAtendidos()}
           </ul>
         </div>
       </div>

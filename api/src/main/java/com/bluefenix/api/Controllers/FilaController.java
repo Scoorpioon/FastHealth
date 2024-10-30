@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.bluefenix.api.Models.Consulta;
 import com.bluefenix.api.Models.Fila;
+import com.bluefenix.api.Models.DTOs.MetodosWS.BuscarConsultaPorDataRequest;
 import com.bluefenix.api.Models.DTOs.MetodosWS.BuscarFilaPorDataRequest;
 import com.bluefenix.api.Models.DTOs.MetodosWS.ConsultaRequest;
 import com.bluefenix.api.Services.ConsultaServices;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
 
 import java.time.LocalDate;
 
@@ -35,7 +37,7 @@ public class FilaController {
     private FilaServices servicoFila;
 
     @Autowired
-    private ConsultaServices servicoConsulta;
+    private ConsultaServices servicosConsulta;
 
     @PostMapping("/criar")
     @Validated
@@ -104,5 +106,21 @@ public class FilaController {
         Fila filaAtualizada = this.servicoFila.inserirNovaConsultaFila(requisicao.getIdFila(), requisicao.getIdConsulta());
 
         return filaAtualizada;
+    }
+
+    @MessageMapping("/buscarConsultas")
+    @SendTo("/consultaWS")
+    public List<Consulta> retornarConsultas(BuscarConsultaPorDataRequest data) {
+        System.out.println("Consultas requisitadas através do WebSocket");
+
+        List<Consulta> consultasEncontradas = this.servicosConsulta.listarConsultasPorData(data.getDataConsulta());
+
+        if(!consultasEncontradas.isEmpty()) {
+            System.out.println("Consultas foram encontradas");
+            return consultasEncontradas;
+        } else {
+            System.out.println("Nenhuma consulta encontrada");
+            return null;
+        }
     }
 }
