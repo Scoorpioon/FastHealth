@@ -5,7 +5,7 @@ import Header from '../../Header';
 const TelaFila = () => {
     return(
         <>
-            <Header logado={true} />
+            <Header logado={true} tipoUsuario={'paciente'} />
             <section id="secao__Fila">
                 <Fila /> 
             </section>

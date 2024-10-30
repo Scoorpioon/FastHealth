@@ -1,15 +1,28 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import axios from 'axios';
 import '../../../Styles/Registro.scss';
 
 const TelaRegistro = () => {
     const [dadosFormulario, setDadosFormulario] = useState({pcd: 0, nascimento: "1998-05-11"});
+    const mensagemErro = useRef(null);
     
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8080/pacientes/criar', dadosFormulario).catch((erro) => {
-            console.log(erro);
-        });
+
+        try {
+            const res = await axios.post('http://localhost:8080/pacientes/criar', dadosFormulario);
+
+            if(res.status == 201) {
+                localStorage.setItem('paciente', JSON.stringify({"data":{"nome":dadosFormulario.nome,"numCarteirinha":dadosFormulario.numCarteirinha}}));
+
+                window.location.href = '/fila/2024-11-01';
+                mensagemErro.current.style.display = 'none';
+            }
+
+        } catch(erro) {
+            console.log('Ocorreu um erro ao tentar fazer a requisição: ' + erro);
+            mensagemErro.current.style.display = 'block';
+        }
     }
 
     const handleAlteracaoDados = (e) => {
@@ -48,6 +61,7 @@ const TelaRegistro = () => {
                 <div className="caixa_Botoes">
                     <input type="submit" value="Cadastrar-se" style={{color: 'white', backgroundColor: 'rgb(81, 0, 157)'}} />
                 </div>
+                <span className="erro" ref={mensagemErro}>Há informações já cadastradas em sistema. Por favor, revise os dados.</span>
             </section>
         </form>
     );

@@ -15,9 +15,34 @@ header {
         color: rgb(220, 220, 220);
     }
 
-    .botao_desconectar {
-        font-weight: bold;
-        cursor: pointer;
+    .caixa_Opcoes {
+        display: flex;
+        gap: 8px;
+
+        .botao_desconectar, a {
+            font-weight: bold;
+            cursor: pointer;
+            color: black;
+        }
+
+        .botao_desconectar {
+            transition: 300ms;
+            border-radius: 20px;
+            padding: 0 6px;
+
+            &:hover {
+                background-color: $corPrincipal;
+                color: white;
+            }
+        }
+
+        a {
+            font-weight: 300;
+
+            &:hover {
+                font-weight: bold;
+            }
+        }
     }
 
     .caixa_Botoes {

@@ -1,17 +1,19 @@
 import { useEffect, useState, useRef, useContext } from 'react';
-import { BancoPacientes } from '../../../Context/BancoPacientes';
+import { adicionarPacienteAtendido } from '../../../Context/Redux/slices/pacientesSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Stomp } from '@stomp/stompjs';
 import SockJS from 'sockjs-client/dist/sockjs';
 import '../../../Styles/Fila.scss';
 
 const Fila = () => {
-  const { pacientes } = useContext(BancoPacientes);
   const { dataFila } = useParams();
   const [infoUsuario, setInfoUsuario] = useState(JSON.parse(localStorage.getItem('paciente')));
   const [posicao, setPosicao] = useState();
   const [fila, setFila] = useState();
+  const [pacientesAtendidos, setarPacienteAtendido] = useState();
   const stompClient = useRef(null);
+  const dispatch = useDispatch();
   const audio = new Audio('/SomFila.mp3');
 
   useEffect(() => {
@@ -72,23 +74,26 @@ const Fila = () => {
     }
   }
 
-  const pacientesAtendidos = () => {
-    console.log(pacientes);
+  const adicionarPacienteAtendido = () => {
+    if(pacientesAtendidos) {
+      console.log('Hellou' + pacientesAtendidos);
 
-    if(pacientes.length > 0) {
-      return pacientes.map((paciente) => {
-        return <li><span>{paciente.nome}</span></li>
-      });
-    } else {
-      return <li><span>...</span></li>
+      return pacientesAtendidos.map((paciente) => {return <li>{paciente.nome}</li>})
     }
   }
 
   useEffect(() => {
     pegarPosicao();
+    audio.play();
 
-    /* audio.play(); */
+    if(fila) {
+      if(pacientesAtendidos) {
+        setarPacienteAtendido('a');
+      }
+    }
+
   }, [fila]);
+
 
   return (
     <section id="secao__Fila">
@@ -109,7 +114,13 @@ const Fila = () => {
         <div id="passados">
           <h2>Pacientes anteriores</h2>
           <ul className="pacientes_passados">
-            {pacientesAtendidos()}
+            {
+              pacientesAtendidos 
+              ?
+              pacientesAtendidos.map((paciente) => {return <li>a</li>})
+              :
+              null
+            }
           </ul>
         </div>
       </div>

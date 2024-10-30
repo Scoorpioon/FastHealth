@@ -89,7 +89,7 @@ const CriacaoConsultas = () => {
 
     return(
         <>
-            <Header logado={true} />
+            <Header logado={true} tipoUsuario={'atendente'} />
             <section id="secao__CriacaoConsultas">
                 <form action="POST" onSubmit={onSubmit}>
                     <div className="caixa_formulario caixa_horario">

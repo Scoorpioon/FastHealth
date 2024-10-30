@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useContext } from 'react';
-import { BancoPacientes } from '../../../Context/BancoPacientes';
+import { adicionarPacienteAtendido } from '../../../Context/Redux/slices/pacientesSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { Stomp } from '@stomp/stompjs';
 import GerarSenhaAleatoria from '../Funcs/GerarSenhaAleatoria';
 import horarioConsulta from '../Funcs/FormatarHorario';
@@ -9,13 +10,14 @@ import axios from 'axios';
 import '../../../Styles/TelaAtendente.scss';
 
 const TelaAtendente = () => {
-    const {pacientes, setPacientes} = useContext(BancoPacientes);
     const [consultas, setConsultas] = useState();
     const [senhas, setSenhas] = useState([]);
     const [fila, setFila] = useState();
+    const pacientesAtendidos = useSelector(state => state.pacientes.lista);
     const botaoInserir = useRef(null);
     const stompClient = useRef(null);
     const dataFila = [2024, 11, 1];
+    const dispatch = useDispatch();
   
     useEffect(() => {
       const socket = new SockJS('http://localhost:8080/ws');
@@ -46,9 +48,6 @@ const TelaAtendente = () => {
       if (stompClient.current && stompClient.current.connected) {
         stompClient.current.send('/app/retornarFilaPorData', {}, JSON.stringify({"dataFila": dataFila}));
 
-        const novoPaciente = {nome: 'teste' + (pacientes.length + 1)};
-        setPacientes([...pacientes, novoPaciente]);
-
       } else {
         console.error('Não deu pra estabalecer a conexão do STOMP por algum motivo. Se vira ai pra achar');
       }
@@ -58,8 +57,6 @@ const TelaAtendente = () => {
     const passarPacienteFila = () => {
       if(stompClient.current && stompClient.current.connected) {
         stompClient.current.send('/app/removerConsulta', {}, JSON.stringify({ idFila: fila.idFila, idConsulta: fila.consultas[0].idConsulta }));
-
-        pacientes.push(fila.consultas[0].paciente.nome);
 
       } else {
         console.error('Não deu pra estabalecer a conexão do STOMP por algum motivo. Se vira ai pra achar');
@@ -140,9 +137,13 @@ const TelaAtendente = () => {
         }
     }
 
+    useEffect(() => {
+      console.log('Pacientes atendidos: ' + pacientesAtendidos);
+    })
+
     return(
         <>
-            <Header logado={true} />
+            <Header logado={true} tipoUsuario={'atendente'} />
             <section id="secao__Atendente">
                 <div id="visualizacao_fila">
                     <h2>Fila de hoje</h2>
