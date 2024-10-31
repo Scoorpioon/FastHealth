@@ -6,7 +6,7 @@
     position: relative;
 
     width: 100%;
-    height: 100%;
+    height: auto;
 
     #principal {
         display: flex;
@@ -17,10 +17,10 @@
 
         text-align: center;
 
-        position: absolute;
+        position: relative;
 
         width: 100.9vw;
-        height: 575px;
+        height: 620px;
 
         h2 {
             font-size: 2.6em;
@@ -35,12 +35,135 @@
             display: flex;
             width: 300px;
             justify-content: space-between;
+            position: relative;
+            top: 20px;
 
             a {
-                @include botao;
+                transition: 300ms;
+                border: 2px solid $corPrincipal;
+                background-color: $corPrincipal;
+                padding: 4px 16px;
+                border-radius: 12px;
+                font-weight: bold;
+                color: white;
 
-                border-radius: 4px;
+                &:hover {
+                    border-radius: 20px;
+                    background-color: $corPrincipalHover;
+                }
             }
         }
+
+        &::after {
+            @include linhaDecorativa;
+        }
+    }
+
+    #paciente, #atendente {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        width: 100%;
+        height: 550px;
+        padding: 6px 55px;
+
+        .img {
+            position: relative;
+            width: 30%;
+            height: 90%;
+
+            img {
+                width: 100%;
+                height: 100%;
+            }
+
+            &::before {
+                content: '';
+                display: block;
+                position: absolute;
+
+                right: 8px;
+                bottom: 8px;
+
+                z-index: -1;
+
+                width: 100%;
+                height: 100%;
+
+                background-color: $corPrincipalSuave;
+            }
+        }
+
+        .texto {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 60%;
+            height: 100%;
+            padding-top: 20px;
+            
+            h2 {
+                font-size: 2.1em;
+                text-align: right;
+                margin-bottom: 20px;
+            }
+
+            p {
+                margin-bottom: 6px;
+                font-size: 1.3em;
+            }
+        }
+
+        &::after {
+            @include linhaDecorativa;
+        }
+    }
+
+    #atendente {
+        flex-direction: row-reverse;
+        margin-bottom: 25px;
+
+        .img {
+            &::before {
+                left: 8px;
+            }
+        }
+
+        .texto {
+            h2 {
+                text-align: left;
+            }
+        }
+    }
+}
+
+footer {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 400px;
+    background-color: $corPrincipal;
+    color: white;
+
+    .lateral_esquerda {
+        width: 20%;
+        height: 80%;
+        border-right: 1px solid white;
+        text-align: center;
+
+        h2 {
+            position: relative;
+            top: 40%;
+            font-size: 2.2em;
+        }
+    }
+
+    .tm {
+        position: absolute;
+        bottom: 25px;
+        right: 25px;
+        color: rgb(131, 41, 215);
     }
 }
