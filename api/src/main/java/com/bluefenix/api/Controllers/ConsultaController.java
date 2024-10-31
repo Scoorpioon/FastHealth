@@ -4,6 +4,7 @@ import java.net.URI;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,11 +32,15 @@ public class ConsultaController {
             return ResponseEntity.badRequest().body("A fila não pode ser inserida manualmente na criação da consulta.");
         }
 
-        this.servicosConsulta.criarConsulta(dadosRecebidosDeLaConsuelta);
+        Consulta consultaCriada = this.servicosConsulta.criarConsulta(dadosRecebidosDeLaConsuelta);
 
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dadosRecebidosDeLaConsuelta.getIdConsulta()).toUri();
-
-        return ResponseEntity.created(uri).build();
+        if(consultaCriada != null) {
+            URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dadosRecebidosDeLaConsuelta.getIdConsulta()).toUri();
+    
+            return ResponseEntity.created(uri).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Já existe uma consulta marcada para esse horário, nessa mesma data.");
+        }
     }
 
     @GetMapping("/buscarConsultas")

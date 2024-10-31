@@ -9,13 +9,10 @@ const TelaLoginAtendente = () => {
         e.preventDefault();
         const res = await axios.post('http://localhost:8080/auth/atendente/login', dadosLogin);
 
-        if(response.status == 401) {
+        if(res.status == 401) {
             console.log('Informações inválidas');
-        } else if(response.status == 200) {
-            console.log(`Logado com sucesso. Token gerado: ${response.data.token}`);
-        }
-
-        if(res) {
+        } else if(res.status == 200) {
+            console.log(`Logado com sucesso. Token gerado: ${res.data.token}`);
             window.location.href = '/painelDoAtendente';
         }
     }

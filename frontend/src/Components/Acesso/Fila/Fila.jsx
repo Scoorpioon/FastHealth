@@ -3,6 +3,7 @@ import { adicionarPacienteAtendido } from '../../../Context/Redux/slices/pacient
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Stomp } from '@stomp/stompjs';
+import AbreviarNome from '../Funcs/AbreviarNome';
 import SockJS from 'sockjs-client/dist/sockjs';
 import '../../../Styles/Fila.scss';
 
@@ -53,13 +54,13 @@ const Fila = () => {
         if(consulta.paciente.nome == infoUsuario.data.nome) {
           return(
           <li key={consulta.idConsulta} value="usuario" className="nome_usuario">
-            <span>{consulta.paciente.nome}</span>
+            <span>{AbreviarNome(consulta.paciente.nome)}</span>
           </li>
           )
         } else {
           return (
           <li key={consulta.idConsulta}>
-            <span>{consulta.paciente.nome}</span>
+            <span>{AbreviarNome(consulta.paciente.nome)}</span>
           </li>
           )
         }
@@ -85,7 +86,7 @@ const Fila = () => {
       return consultas.map((consulta) => {
         if(consulta.consultaRealizada === 1) {
           return(
-            <li key={consulta.idConsulta}>{consulta.paciente.nome}</li>
+            <li key={consulta.idConsulta}>{AbreviarNome(consulta.paciente.nome)}</li>
           )
         }
       });
@@ -94,7 +95,7 @@ const Fila = () => {
 
   useEffect(() => {
     pegarPosicao();
-    audio.play();
+    /* audio.play(); */
 
     if(fila) {
       if(pacientesAtendidos) {
@@ -103,10 +104,6 @@ const Fila = () => {
     }
 
   }, [fila]);
-
-  useEffect(() => {
-    console.log(consultas);
-  }, [consultas]);
 
   return (
     <section id="secao__Fila">

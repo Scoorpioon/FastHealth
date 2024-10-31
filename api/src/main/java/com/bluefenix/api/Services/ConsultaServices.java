@@ -33,16 +33,22 @@ public class ConsultaServices {
     public Consulta criarConsulta(Consulta dadosRecebidos) {
         dadosRecebidos.setIdConsulta(null);
 
-        System.out.println("Criação de fila requisitada. Data da consulta: " + dadosRecebidos.getDataConsulta());
-
         Fila filaEncontrada = this.filaServices.encontrarFilaPorData(dadosRecebidos.getDataConsulta());
+        Consulta consultaJaExistente = this.repositorioConsulta.verificarExistenciaDeConsulta(dadosRecebidos.getDataHorarioConsulta());
+
+        if(consultaJaExistente != null) {
+            System.out.println("Já existe uma consulta marcada para o horário requisitado. A consulta não será criada.");
+
+            return null;
+        }
+        
+        
         if(filaEncontrada == null) {
+            System.out.println("Criação de fila requisitada. Data da consulta: " + dadosRecebidos.getDataConsulta());
             filaEncontrada = this.filaServices.cadastrarFila(
                 new Fila(dadosRecebidos.getDataConsulta())
             );
         } // A consulta já associa automaticamente à fila, e se a fila não existir, é criada aqui mesmo também. Por questões de segurança, eu fiz com que o código não permita mais inserção manual do ID de uma fila na consulta, belê?
-
-        // dadosRecebidos.setFila(filaEncontrada); // Não vamos mais inserir o paciente direto na fila
 
         this.repositorioConsulta.save(dadosRecebidos);
 

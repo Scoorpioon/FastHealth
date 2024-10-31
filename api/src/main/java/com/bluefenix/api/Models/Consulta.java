@@ -29,10 +29,10 @@ public class Consulta {
     @Column(name = "data_consulta", nullable = false)
     private LocalDate dataConsulta;
 
-    @Column(name = "data_horario_consulta", nullable = false)
+    @Column(name = "horario_consulta", nullable = false)
     private LocalDateTime dataHorarioConsulta;
 
-    @Column(name = "tipo_consulta", length = 16, nullable = false)
+    @Column(name = "tipo_consulta", length = 25, nullable = false)
     private String tipoConsulta;
 
     @Column(name = "consulta_realizada", columnDefinition = "BIT")

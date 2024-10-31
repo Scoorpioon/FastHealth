@@ -36,7 +36,7 @@ const TelaRegistroAtendente = () => {
     return(
         <form method="POST" onSubmit={handleSubmit} id="secao__Login">
             <section id="caixa__Login">
-                <h2>Cadastro</h2>
+                <h2>Cadastro de atendente</h2>
 
                 <div className="caixa_Campos">
                     <input type="text" placeholder="Seu nome" name="nome" id="nome" onChange={handleAlteracaoDados} />

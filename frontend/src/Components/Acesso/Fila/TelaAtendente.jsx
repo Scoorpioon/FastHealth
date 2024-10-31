@@ -67,6 +67,9 @@ const TelaAtendente = () => {
     const inserirPacienteFila = (e) => {
         setSenhas(...senhas, [GerarSenhaAleatoria()]);
 
+        console.log(e.target);
+        e.target.disabled = 'true';
+
         for(let c = 0; c < fila.consultas.length; c++) {
             if(fila.consultas[c].idConsulta == e.target.value) {
                 console.log('Esse id já está inserido na fila.');
@@ -81,10 +84,10 @@ const TelaAtendente = () => {
         if (stompClient.current && stompClient.current.connected) {
           stompClient.current.send('/app/inserirConsulta', {}, JSON.stringify({idFila: fila.idFila, idConsulta: e.target.value}));
 
-          e.target.disabled = true;
         } else {
           console.error('Conexão STOMP não estabelecida.');
         }
+        
     };
 
     useEffect(() => {
@@ -108,7 +111,7 @@ const TelaAtendente = () => {
             <td>{consulta.tipoConsulta}</td>
             <td>{horarioConsulta(consulta.dataHorarioConsulta)}</td>
             <td><button 
-            onClick={inserirPacienteFila} 
+            onClick={inserirPacienteFila}
             value={consulta.idConsulta}
             >Inserir na fila</button></td>
           </tr>)})
@@ -136,10 +139,6 @@ const TelaAtendente = () => {
             return <span>Carregando...</span>
         }
     }
-
-    useEffect(() => {
-      console.log('Pacientes atendidos: ' + pacientesAtendidos);
-    })
 
     return(
         <>
