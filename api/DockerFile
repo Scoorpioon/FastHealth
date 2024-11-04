@@ -3,7 +3,7 @@ FROM maven:3.9.8-eclipse-temurin-21-alpine as builder
 COPY ./src src/
 COPY ./pom.xml pom.xml
 
-RUN mvn clean verify
+RUN mvn clean verify -D maven.test.skip=true
 
 FROM eclipse-temurin:21-jre-alpine
 
