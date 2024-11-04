@@ -18,6 +18,7 @@ const TelaAtendente = () => {
     const stompClient = useRef(null);
     const dataFila = [2024, 11, 1];
     const dispatch = useDispatch();
+    const date = new Date();
   
     useEffect(() => {
       const socket = new SockJS('http://localhost:8080/ws');
@@ -99,6 +100,8 @@ const TelaAtendente = () => {
         }
 
         buscarConsultas();
+
+        console.log(date.getMonth());
     }, []);
 
     const pacientesDoDia = () => {
