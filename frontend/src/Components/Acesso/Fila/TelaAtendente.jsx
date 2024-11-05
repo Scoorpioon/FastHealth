@@ -16,9 +16,9 @@ const TelaAtendente = () => {
     const pacientesAtendidos = useSelector(state => state.pacientes.lista);
     const botaoInserir = useRef(null);
     const stompClient = useRef(null);
-    const dataFila = [2024, 11, 1];
     const dispatch = useDispatch();
     const date = new Date();
+    const dataFila = [date.getFullYear(), date.getMonth() + 1, date.getUTCDate() - 1];
   
     useEffect(() => {
       const socket = new SockJS('http://localhost:8080/ws');
@@ -93,15 +93,16 @@ const TelaAtendente = () => {
 
     useEffect(() => {
         const buscarConsultas = async () => {
-            const res = await axios.get(`http://localhost:8080/consultas/buscarConsultas/2024-11-01`);
-    
-            setConsultas(res);
-            console.log(res.data);
+          const data = `${dataFila[0]}-${dataFila[1]}-${dataFila[2] < 10 ? '0' + dataFila[2] : dataFila[2]}`;
+          const res = await axios.get(`http://localhost:8080/consultas/buscarConsultas/${data}`);
+  
+          setConsultas(res);
+          console.log(res.data);
         }
 
         buscarConsultas();
 
-        console.log(date.getMonth());
+        console.log('Data: ' + dataFila);
     }, []);
 
     const pacientesDoDia = () => {

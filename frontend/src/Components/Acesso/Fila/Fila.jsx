@@ -84,7 +84,7 @@ const Fila = () => {
   const listarPacientesAtendidos = () => {
     if(consultas) {
       return consultas.map((consulta) => {
-        if(consulta.consultaRealizada === 1) {
+        if(consulta.consultaRealizada === true) {
           return(
             <li key={consulta.idConsulta}>{AbreviarNome(consulta.paciente.nome)}</li>
           )
@@ -95,13 +95,7 @@ const Fila = () => {
 
   useEffect(() => {
     pegarPosicao();
-    /* audio.play(); */
-
-    if(fila) {
-      if(pacientesAtendidos) {
-        setarPacienteAtendido('a');
-      }
-    }
+    audio.play();
 
   }, [fila]);
 
