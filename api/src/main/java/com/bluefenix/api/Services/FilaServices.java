@@ -97,7 +97,7 @@ public class FilaServices {
             filaEncontrada.getConsultas().remove(consultaEncontrada);
             consultaEncontrada.setFila(null);
 
-            consultaEncontrada.setConsultaRealizada(1);
+            consultaEncontrada.setConsultaRealizada(true);
 
             repositorioConsulta.save(consultaEncontrada);
             repositorioFila.save(filaEncontrada);

@@ -47,7 +47,7 @@ public class Atendente implements UserDetails, Usuario {
     @Column (name = "datareg", nullable = false)
     private Date registerDate = new Date(); // Já gera de padrão a data pa nois
 
-    @Column(columnDefinition = "CHAR(5)")
+    @Column(name = "roles")
     private UserRole roles;
     
     public Atendente(String email, String nome, String cpf, String senha, UserRole roles) {

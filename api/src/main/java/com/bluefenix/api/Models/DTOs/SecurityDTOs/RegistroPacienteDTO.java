@@ -12,7 +12,7 @@ public record RegistroPacienteDTO(
     String rg,
     String email,
     String senha,
-    int pcd,
+    Boolean pcd,
     UserRole roles
 ) {
     

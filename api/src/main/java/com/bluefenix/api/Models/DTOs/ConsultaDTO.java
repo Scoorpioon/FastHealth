@@ -10,9 +10,9 @@ public class ConsultaDTO {
     private String tipoConsulta;
     private Long idPaciente;
     private Long idFila;
-    private int consultaRealizada;
+    private Boolean consultaRealizada;
 
-    public ConsultaDTO(Long idConsulta, LocalDate dataConsulta, LocalDateTime dataHorarioConsulta, String tipoConsulta, Long idPaciente, int consultaRealizada) {
+    public ConsultaDTO(Long idConsulta, LocalDate dataConsulta, LocalDateTime dataHorarioConsulta, String tipoConsulta, Long idPaciente, Boolean consultaRealizada) {
         this.idConsulta = idConsulta;
         this.dataConsulta = dataConsulta;
         this.dataHorarioConsulta = dataHorarioConsulta;
@@ -69,11 +69,11 @@ public class ConsultaDTO {
         this.idFila = idFila;
     }
 
-    public int getConsultaRealizada() {
+    public Boolean getConsultaRealizada() {
         return consultaRealizada;
     }
 
-    public void setConsultaRealizada(int consultaRealizada) {
+    public void setConsultaRealizada(Boolean consultaRealizada) {
         this.consultaRealizada = consultaRealizada;
     }
 }

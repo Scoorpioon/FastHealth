@@ -35,8 +35,8 @@ public class Consulta {
     @Column(name = "tipo_consulta", length = 25, nullable = false)
     private String tipoConsulta;
 
-    @Column(name = "consulta_realizada", columnDefinition = "BIT")
-    private int consultaRealizada = 0;
+    @Column(name = "consulta_realizada")
+    private Boolean consultaRealizada = false;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_fila")
@@ -87,11 +87,11 @@ public class Consulta {
         this.tipoConsulta = tipoConsulta;
     }
 
-    public int getConsultaRealizada() {
+    public Boolean getConsultaRealizada() {
         return consultaRealizada;
     }
 
-    public void setConsultaRealizada(int consultaRealizada) {
+    public void setConsultaRealizada(Boolean consultaRealizada) {
         this.consultaRealizada = consultaRealizada;
     }
 

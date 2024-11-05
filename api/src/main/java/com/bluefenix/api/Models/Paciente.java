@@ -55,10 +55,10 @@ public class Paciente implements UserDetails, Usuario {
     @Column (name = "senha", length = 60, nullable = false)
     private String senha;
 
-    @Column (name = "paciente_pcd", columnDefinition = "BIT", nullable = false)
-    private int pcd;
+    @Column (name = "paciente_pcd", nullable = false)
+    private Boolean pcd;
 
-    @Column(columnDefinition = "CHAR(5)")
+    @Column(name = "roles")
     private UserRole roles;
 
     @OneToMany(mappedBy = "paciente", fetch = FetchType.EAGER)
@@ -67,7 +67,7 @@ public class Paciente implements UserDetails, Usuario {
 
     
     public Paciente(String nome, String cpf, LocalDate nascimento, String numCarteirinha, String rg, String email,
-            String senha, int pcd, UserRole roles) {
+            String senha, Boolean pcd, UserRole roles) {
         this.nome = nome;
         this.cpf = cpf;
         this.nascimento = nascimento;
@@ -158,11 +158,11 @@ public class Paciente implements UserDetails, Usuario {
         this.senha = senha;
     }
 
-    public int getPcd() {
+    public Boolean getPcd() {
         return pcd;
     }
 
-    public void setPcd(int pcd) {
+    public void setPcd(Boolean pcd) {
         this.pcd = pcd;
     }
 
