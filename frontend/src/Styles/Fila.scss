@@ -62,8 +62,10 @@
             }
         }
 
+        
         .botao_dados {
             background-color: $corPrincipal;
+            position: absolute;
             color: white;
             font-weight: bold;
             border-radius: 60px;
@@ -73,6 +75,25 @@
             cursor: pointer;
             position: absolute;
             left: 0;
+        }
+
+        .dados_compactados {
+            position: absolute;
+            top: 20px;
+            left: 0;
+
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+
+            border: 2px solid $corPrincipal;
+
+            width: 200px;
+            padding: 4px;
+
+            background-color: white;
+
+            z-index: 5;
         }
     
         .nome_pacientes /* (lista dos pacientes) */ {
@@ -126,6 +147,26 @@
             } */
         }
     
+    }
+}
+
+@media (max-width: 1658px) {
+    #secao__Fila {
+        #listas {
+            .dados {
+                left: -50px;
+            }
+        }
+    }
+}
+
+@media (max-width: 1500px) {
+    #secao__Fila {
+        #listas {
+            .dados {
+                left: -75px;
+            }
+        }
     }
 }
 

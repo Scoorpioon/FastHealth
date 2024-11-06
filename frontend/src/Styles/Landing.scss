@@ -167,3 +167,174 @@ footer {
         color: rgb(131, 41, 215);
     }
 }
+
+@media (max-width: 1128px) {
+    #secao__Principal {
+    
+        #principal {
+    
+            h2 {
+
+            }
+    
+            span {
+
+            }
+    
+            .botoes {
+    
+                a {
+    
+                    &:hover {
+
+                    }
+                }
+            }
+    
+            &::after {
+            }
+        }
+    
+        #paciente, #atendente {
+            flex-direction: column;
+    
+            .img {
+    
+                img {
+
+                }
+    
+                &::before {
+
+                }
+            }
+    
+            .texto {
+
+            }
+    
+            &::after {
+
+            }
+        }
+    
+        #atendente {
+
+        }
+    }
+}
+
+@media (max-width: 760px) {
+    #secao__Principal {
+    
+        #principal {
+    
+            h2 {
+
+            }
+    
+            span {
+
+            }
+    
+            .botoes {
+    
+                a {
+    
+                    &:hover {
+
+                    }
+                }
+            }
+    
+            &::after {
+            }
+        }
+    
+        #paciente, #atendente {
+            width: 100%;
+            height: 950px;
+            margin: 16px 0;
+
+            .img {
+                width: 100%;
+
+                img {
+                    
+                }
+    
+                &::before {
+                    left: 0;
+                }
+            }
+    
+            .texto {
+                width: 100%;
+                font-size: 0.8em;
+            }
+    
+            &::after {
+
+            }
+        }
+    
+        #atendente {
+            
+        }
+    }
+}
+
+@media (max-width: 412px) {
+    #secao__Principal {
+    
+        #principal {
+    
+            h2 {
+
+            }
+    
+            span {
+
+            }
+    
+            .botoes {
+    
+                a {
+    
+                    &:hover {
+
+                    }
+                }
+            }
+    
+            &::after {
+            }
+        }
+    
+        #paciente, #atendente {
+            height: 930px;
+
+            .img {
+                img {
+                    
+                }
+    
+                &::before {
+
+                }
+            }
+    
+            .texto {
+
+            }
+    
+            &::after {
+
+            }
+        }
+    
+        #atendente {
+            
+        }
+    }
+}

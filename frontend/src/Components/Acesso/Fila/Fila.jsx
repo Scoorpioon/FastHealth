@@ -14,7 +14,9 @@ const Fila = () => {
   const [fila, setFila] = useState();
   const [consultas, setConsultas] = useState();
   const [pacientesAtendidos, setarPacienteAtendido] = useState();
+  const [botaoClicado, clicarNoBotao] = useState(false);
   const stompClient = useRef(null);
+  const caixaDados = useRef(null);
   const dispatch = useDispatch();
   const audio = new Audio('/SomFila.mp3');
 
@@ -93,6 +95,16 @@ const Fila = () => {
     }
   }
 
+  const mostrarDados = () => {
+    if(botaoClicado) {
+      caixaDados.current.style.display = 'none';
+      clicarNoBotao(false);
+    } else {
+      caixaDados.current.style.display = 'flex';
+      clicarNoBotao(true);
+    }
+  }
+
   useEffect(() => {
     pegarPosicao();
     audio.play();
@@ -102,12 +114,20 @@ const Fila = () => {
   return (
     <section id="secao__Fila">
       <div id="listas">
-        {window.screen.width > 1340 ? <div className="dados">
+        {window.screen.width > 1340 
+        ? 
+        <div className="dados">
           <span>Tempo médio de atendimento: 20:00</span>
           <span>Posição na fila: {posicao}</span>
         </div>
         :
-        <span className="botao_dados">i</span>
+        <>
+          <span className="botao_dados" onClick={mostrarDados}>i</span>
+          <div className="dados_compactados" ref={caixaDados}>
+            <span>Tempo médio de atendimento: 20:00</span>
+            <span>Posição na fila: {posicao}</span>
+          </div>
+        </>
         }
         <div id="fila">
           <h2>Fila de atendimento</h2>
