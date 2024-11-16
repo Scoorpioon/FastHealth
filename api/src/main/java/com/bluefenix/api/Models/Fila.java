@@ -16,6 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderColumn;
 import jakarta.persistence.Table;
 import lombok.NoArgsConstructor;
 
@@ -44,7 +45,8 @@ public class Fila {
     // o orphanRemoval = true significa que, quando uma consulta for removida da lista de consultas de uma fila, ela também será deletada do banco de dados
     @OneToMany(mappedBy = "fila", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("fila")
-    private List<Consulta> consultas = new ArrayList<>();
+    @OrderColumn(name = "ordem_consulta")
+    private List<Consulta> consultas;
 
     public Fila(LocalDate dataFila) {
         this.dataFila = dataFila;

@@ -42,7 +42,6 @@ public class ConsultaServices {
             return null;
         }
         
-        
         if(filaEncontrada == null) {
             System.out.println("Criação de fila requisitada. Data da consulta: " + dadosRecebidos.getDataConsulta());
             filaEncontrada = this.filaServices.cadastrarFila(

@@ -38,14 +38,44 @@
         .nome_pacientes {
             text-align: center;
             list-style-type: none;
+            position: relative;
 
             li {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+
                 font-size: 1.8em;
                 margin-bottom: 8px;
+                position: relative;
+
+                cursor: default;
 
                 &:nth-child(1) {
                     font-size: 2.6em;
                 }
+
+                &:hover button {
+                    display: flex;
+                }
+            }
+
+            button {
+                @include botao;
+
+                transition: 200ms;
+                display: none;
+
+                width: 10%;
+                padding: 5px 10.4px;
+
+                position: relative;
+                top: 2px;
+
+                border-radius: 4px;
+
+                font-size: .4em;
             }
         }
 

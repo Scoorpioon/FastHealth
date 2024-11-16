@@ -16,9 +16,11 @@ const TelaAtendente = () => {
     const pacientesAtendidos = useSelector(state => state.pacientes.lista);
     const botaoInserir = useRef(null);
     const stompClient = useRef(null);
+    const botaoRemover = useRef(null);
+    const paciente = useRef([]);
     const dispatch = useDispatch();
     const date = new Date();
-    const dataFila = [date.getFullYear(), date.getMonth() + 1, date.getUTCDate() - 1];
+    const dataFila = [date.getFullYear(), date.getMonth() + 1, date.getUTCDate()];
   
     useEffect(() => {
       const socket = new SockJS('http://localhost:8080/ws');
@@ -55,7 +57,7 @@ const TelaAtendente = () => {
     };
   
     // Função para remover uma consulta da fila
-    const passarPacienteFila = () => {
+    const passarPacienteFila = (obj) => {
       if(stompClient.current && stompClient.current.connected) {
         stompClient.current.send('/app/removerConsulta', {}, JSON.stringify({ idFila: fila.idFila, idConsulta: fila.consultas[0].idConsulta }));
 
@@ -93,16 +95,14 @@ const TelaAtendente = () => {
 
     useEffect(() => {
         const buscarConsultas = async () => {
-          const data = `${dataFila[0]}-${dataFila[1]}-${dataFila[2] < 10 ? '0' + dataFila[2] : dataFila[2]}`;
+          const data = `${dataFila[0]}-${dataFila[1]}-${dataFila[2]  < 10 ? `0${dataFila[2]}` : dataFila[2]}`;
+
           const res = await axios.get(`http://localhost:8080/consultas/buscarConsultas/${data}`);
   
           setConsultas(res);
-          console.log(res.data);
         }
 
         buscarConsultas();
-
-        console.log('Data: ' + dataFila);
     }, []);
 
     const pacientesDoDia = () => {
@@ -134,9 +134,21 @@ const TelaAtendente = () => {
         if(fila) {
             return fila.consultas.map((consulta, pos) => {
               if(pos == 0) {
-                return <li className="paciente_atual" key={consulta.idConsulta}><strong>{consulta.paciente.nome}</strong> - Atual</li>
+                return(
+                <li className="paciente_atual" key={consulta.idConsulta}>
+                  <strong>{consulta.paciente.nome}</strong> <span>- Atual</span>
+                </li>)
               } else {
-                return <li key={consulta.idConsulta}>{consulta.paciente.nome}</li>
+                return(
+                <li key={consulta.idConsulta}>
+                  <span>{consulta.paciente.nome}</span>
+                  <button 
+                  ref={botaoRemover} 
+                  onClick={() => {
+                    stompClient.current.send('/app/removerConsulta', {}, JSON.stringify({ idFila: fila.idFila, idConsulta: consulta.idConsulta }))
+                  }}
+                  >X</button>
+                </li>)
               }
             })
         } else {
@@ -151,7 +163,7 @@ const TelaAtendente = () => {
                 <div id="visualizacao_fila">
                     <h2>Fila de hoje</h2>
                     <ul className="nome_pacientes">
-                    {inserirPacientes()}
+                      {inserirPacientes()}
                     </ul>
 
                     <div className="caixa__Botoes">
@@ -160,7 +172,7 @@ const TelaAtendente = () => {
                     </div>
                 </div>
                 <div id="visualizacao_pacientes">
-                  <h2>Pacientes para o dia de hoje: {dataFila[2]}/{dataFila[1]}/{dataFila[0]}</h2>
+                  <h2>Pacientes para o dia de hoje: {dataFila[2]  < 10 ? `0${dataFila[2]}` : dataFila[2]}/{dataFila[1]}/{dataFila[0]}</h2>
                     <table className="tabela_consultas">
                         <thead>
                             <tr>
