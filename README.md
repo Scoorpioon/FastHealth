@@ -11,8 +11,8 @@ O código foi desenvolvido inicialmente como um trabalho universitário da Unive
 - [Endpoints da API](#endpoints)
 - [URLs](#urls)
 - [Autenticação](#autenticação)
-- [Banco de dados](#bd)
-- [Contribuição](#contribuicao)
+- [Banco de dados](#database)
+- [Contribuição](#contribuição)
 
 ## Instalação
 
@@ -27,7 +27,7 @@ O código foi desenvolvido inicialmente como um trabalho universitário da Unive
    npm install @reduxjs/toolkit react-redux
    ``` 
 
-4. Instale [SQL Server](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads)
+4. Instale [PostgreSQL](https://www.postgresql.org/)
 
 ## Uso
 
@@ -72,7 +72,7 @@ O Front-end possui os seguintes caminhos:
 ```
 
 
-## Authentication
+## Autenticação
 A API utiliza autenticação para controlar permissões. No entanto, atualmente está em desenvolvimento e não funcionando devidamente.
 
 ```
@@ -82,7 +82,7 @@ ADMIN -> Cargo atual para atendente
 No momento, qualquer cargo pode fazer requisições totais na API.
 
 ## Database
-Esse projeto utiliza [SQL Server](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads) para fazer o armazenamento dos dados do projeto.
+Esse projeto utiliza [PostgreSQL](https://www.postgresql.org/) para fazer o armazenamento dos dados do projeto.
 
 ## Contribuição
 Contribuições são mais do que bem-vindas neste projeto! Você pode postar suas sugestões nos issues ou solicitar um pull request no projeto.
