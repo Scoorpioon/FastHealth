@@ -25,6 +25,7 @@ O código foi desenvolvido inicialmente como um trabalho universitário da Unive
    ```bash
    npm install sass
    npm install @reduxjs/toolkit react-redux
+   npm install react-router-dom
    ``` 
 
 4. Instale [PostgreSQL](https://www.postgresql.org/)
