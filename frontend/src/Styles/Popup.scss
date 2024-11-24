@@ -1,0 +1,96 @@
+@import 'General.scss';
+
+#popup {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    .fundoFalso {
+        position: absolute;
+    
+        width: 100%;
+        height: 100%;
+    
+        z-index: 50; // sobrepõe tudo, não esquece disso caso aconteça algum bug
+    
+        background-color: black;
+        opacity: 0.4;
+    
+    }
+    
+    dialog {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 28px;
+    
+        width: 35%;
+        height: 30%;
+    
+        border: none;
+        margin: 0 auto;
+    
+        position: absolute;
+        top: 35%;
+
+        font-size: 1.2em;
+    
+        background-color: white;
+        opacity: 1;
+    
+        z-index: 51;
+    
+        .fechar {
+            @include botao;
+    
+            width: 5.2%;
+    
+            position: absolute;
+            top: -10px;
+            right: -15px;
+
+            font-size: .9em;
+        }
+    
+        .conteudo {
+            text-align: center;
+
+            h2 {
+                margin-bottom: 6px;
+            }
+        }
+    
+        .botoes {
+            display: flex;
+            gap: 8px;
+    
+            button {
+                @include botao;
+    
+                font-size: .8em;
+                border-radius: 4px;
+    
+                &:nth-child(1) {
+                    background-color: rgb(170, 170, 170);
+
+                    &:hover {
+                        background-color: rgb(180, 180, 180);
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1575px) {
+    #popup {
+        dialog {
+            .fechar {
+                width: 7%;
+                right: -10px;
+            }
+        }
+    }
+}

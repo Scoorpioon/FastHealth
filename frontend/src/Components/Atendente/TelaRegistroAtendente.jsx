@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import axios from 'axios';
-import '../../../Styles/Registro.scss';
+import '../../Styles/Registro.scss';
 
 const TelaRegistroAtendente = () => {
     const [dadosFormulario, setDadosFormulario] = useState({roles: 'admin'});

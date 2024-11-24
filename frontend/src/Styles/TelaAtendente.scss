@@ -3,9 +3,14 @@
 
 #secao__Atendente {
     @include secao;
+
+    height: 95.6%;
+
     flex-direction: row;
     align-items: baseline;
     justify-content: center;
+
+    overflow-y: hidden;
 
     #visualizacao_fila, #visualizacao_pacientes {
         display: flex;
@@ -67,7 +72,7 @@
                 transition: 200ms;
                 display: none;
 
-                width: 10%;
+                width: 27.3px;
                 padding: 5px 10.4px;
 
                 position: relative;

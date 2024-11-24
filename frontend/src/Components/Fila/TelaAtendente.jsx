@@ -1,15 +1,17 @@
 import { useState, useEffect, useRef, useContext } from 'react';
-import { adicionarPacienteAtendido } from '../../../Context/Redux/slices/pacientesSlice';
+import { adicionarPacienteAtendido } from '../../Context/Redux/slices/pacientesSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import GerarSenhaAleatoria from '../../Funcs/GerarSenhaAleatoria';
+import horarioConsulta from '../../Funcs/FormatarHorario';
 import { Stomp } from '@stomp/stompjs';
-import GerarSenhaAleatoria from '../Funcs/GerarSenhaAleatoria';
-import horarioConsulta from '../Funcs/FormatarHorario';
 import SockJS from 'sockjs-client/dist/sockjs';
-import Header from '../../Header';
+import Header from '../Header';
+import Popup from '../Popup';
 import axios from 'axios';
-import '../../../Styles/TelaAtendente.scss';
+import '../../Styles/TelaAtendente.scss';
 
 const TelaAtendente = () => {
+    const [popup, setarPopup] = useState(false); // arg1: mostrar ou não mostrar (booleano), arg2: dados para remoção (objeto), arg3: nome do paciente (string).
     const [consultas, setConsultas] = useState();
     const [senhas, setSenhas] = useState([]);
     const [fila, setFila] = useState();
@@ -17,7 +19,7 @@ const TelaAtendente = () => {
     const botaoInserir = useRef(null);
     const stompClient = useRef(null);
     const botaoRemover = useRef(null);
-    const paciente = useRef([]);
+    const pagina = useRef(null);
     const dispatch = useDispatch();
     const date = new Date();
     const dataFila = [date.getFullYear(), date.getMonth() + 1, date.getUTCDate()];
@@ -68,14 +70,13 @@ const TelaAtendente = () => {
   
     // Função para inserir uma nova consulta na fila
     const inserirPacienteFila = (e) => {
-        setSenhas(...senhas, [GerarSenhaAleatoria()]);
+        setSenhas(...senhas, [GerarSenhaAleatoria()]); // função futura de geração de senha de atendimento
 
         console.log(e.target);
         e.target.disabled = 'true';
-
+        
         for(let c = 0; c < fila.consultas.length; c++) {
             if(fila.consultas[c].idConsulta == e.target.value) {
-                console.log('Esse id já está inserido na fila.');
 
                 e.target.disabled = true;
                 e.target.classList.add('desabilitado');
@@ -87,16 +88,18 @@ const TelaAtendente = () => {
         if (stompClient.current && stompClient.current.connected) {
           stompClient.current.send('/app/inserirConsulta', {}, JSON.stringify({idFila: fila.idFila, idConsulta: e.target.value}));
 
+          e.target.disabled = 'true'
+          e.target.classList.add('desabilitado');
+
         } else {
           console.error('Conexão STOMP não estabelecida.');
         }
-        
+
     };
 
     useEffect(() => {
         const buscarConsultas = async () => {
           const data = `${dataFila[0]}-${dataFila[1]}-${dataFila[2]  < 10 ? `0${dataFila[2]}` : dataFila[2]}`;
-
           const res = await axios.get(`http://localhost:8080/consultas/buscarConsultas/${data}`);
   
           setConsultas(res);
@@ -117,7 +120,7 @@ const TelaAtendente = () => {
             <td><button 
             onClick={inserirPacienteFila}
             value={consulta.idConsulta}
-            >Inserir na fila</button></td>
+            >+</button></td>
           </tr>)})
       } else {
         return(
@@ -130,7 +133,17 @@ const TelaAtendente = () => {
       }
     }
 
+    const atualizacaoPopup = (informacaoRecebida) => {
+      // não esquece, o popup retorna uma lista com dois valores: O primeiro é um booleano, ele informa se o usuário quis ou não continuar com a remoção do paciente. O segundo é a ref que aponta pro popup em si. Beleza?
+      
+      informacaoRecebida[0] === true ? stompClient.current.send('/app/removerConsulta', {}, JSON.stringify(popup[1])) : null;
+      
+      setarPopup(false);
+    }
+
     const inserirPacientes = () => {
+      // stompClient.current.send('/app/removerConsulta', {}, JSON.stringify({ idFila: fila.idFila, idConsulta: consulta.idConsulta
+
         if(fila) {
             return fila.consultas.map((consulta, pos) => {
               if(pos == 0) {
@@ -144,9 +157,7 @@ const TelaAtendente = () => {
                   <span>{consulta.paciente.nome}</span>
                   <button 
                   ref={botaoRemover} 
-                  onClick={() => {
-                    stompClient.current.send('/app/removerConsulta', {}, JSON.stringify({ idFila: fila.idFila, idConsulta: consulta.idConsulta }))
-                  }}
+                  onClick={() => {setarPopup([true, { idFila: fila.idFila, idConsulta: consulta.idConsulta }, consulta.paciente.nome])}}
                   >X</button>
                 </li>)
               }
@@ -159,7 +170,9 @@ const TelaAtendente = () => {
     return(
         <>
             <Header logado={true} tipoUsuario={'atendente'} />
-            <section id="secao__Atendente">
+            <section id="secao__Atendente" ref={pagina}>
+                {popup[0] && <Popup atualizacao={atualizacaoPopup} nome={popup[2]} />}
+
                 <div id="visualizacao_fila">
                     <h2>Fila de hoje</h2>
                     <ul className="nome_pacientes">
@@ -172,7 +185,7 @@ const TelaAtendente = () => {
                     </div>
                 </div>
                 <div id="visualizacao_pacientes">
-                  <h2>Pacientes para o dia de hoje: {dataFila[2]  < 10 ? `0${dataFila[2]}` : dataFila[2]}/{dataFila[1]}/{dataFila[0]}</h2>
+                  <h2>Pacientes para o dia de hoje: {dataFila[2] < 10 ? `0${dataFila[2]}` : dataFila[2]}/{dataFila[1]}/{dataFila[0]}</h2>
                     <table className="tabela_consultas">
                         <thead>
                             <tr>

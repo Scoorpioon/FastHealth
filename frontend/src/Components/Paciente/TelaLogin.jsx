@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import axios from 'axios';
-import '../../../Styles/Login.scss';
+import '../../Styles/Login.scss';
 
 const TelaLogin = () => {
     const [dadosLogin, setDadosLogin] = useState({});

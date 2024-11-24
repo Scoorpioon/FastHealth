@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react';
 import axios from 'axios';
-import '../../../Styles/Registro.scss';
+import '../../Styles/Registro.scss';
 
 const TelaRegistro = () => {
     const [dadosFormulario, setDadosFormulario] = useState({pcd: 0, nascimento: "1998-05-11"});

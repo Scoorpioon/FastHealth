@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import Header from "../../Header";
-import API from '../../../api/config';
-import ListarHorarios from '../Funcs/ListarHorarios';
+import ListarHorarios from '../../Funcs/ListarHorarios';
+import Header from "../Header";
+import API from '../../api/config';
 import axios from "axios";
-import '../../../Styles/Consultas.scss';
+import '../../Styles/Consultas.scss';
 
 const CriacaoConsultas = () => {
     const [pacientes, setarPacientes] = useState();

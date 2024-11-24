@@ -1,6 +1,6 @@
 import React from 'react';
 import Fila from './Fila';
-import Header from '../../Header';
+import Header from '../Header';
 
 const TelaFila = () => {
     return(

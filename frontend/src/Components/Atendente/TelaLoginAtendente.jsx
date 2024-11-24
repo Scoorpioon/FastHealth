@@ -1,6 +1,6 @@
 import Reac, {useState} from 'react';
 import axios from 'axios';
-import '../../../Styles/Login.scss';
+import '../../Styles/Login.scss';
 
 const TelaLoginAtendente = () => {
     const [dadosLogin, setDadosLogin] = useState({});
