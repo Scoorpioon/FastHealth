@@ -13,6 +13,8 @@ const TelaLoginAtendente = () => {
             console.log('Informações inválidas');
         } else if(res.status == 200) {
             console.log(`Logado com sucesso. Token gerado: ${res.data.token}`);
+
+            localStorage.setItem('usuario', JSON.stringify(res));
             window.location.href = '/painelDoAtendente';
         }
     }

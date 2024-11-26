@@ -12,7 +12,13 @@ header {
     padding: 0 20px;
     
     h1 {
+        transition: 200ms ease-in-out;
         color: rgb(220, 220, 220);
+        cursor: pointer;
+
+        &:hover {
+            color: rgb(64, 64, 64);
+        }
     }
 
     .caixa_Opcoes {

@@ -39,7 +39,7 @@ public class ConsultaController {
     
             return ResponseEntity.created(uri).build();
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Já existe uma consulta marcada para esse horário, nessa mesma data.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("consulta_existente");
         }
     }
 

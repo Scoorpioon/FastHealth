@@ -13,6 +13,7 @@ import '../../Styles/TelaAtendente.scss';
 const TelaAtendente = () => {
     const [popup, setarPopup] = useState(false); // arg1: mostrar ou não mostrar (booleano), arg2: dados para remoção (objeto), arg3: nome do paciente (string).
     const [consultas, setConsultas] = useState();
+    const [sessao, setarSessao] = useState(JSON.parse(localStorage.getItem('usuario')));
     const [senhas, setSenhas] = useState([]);
     const [fila, setFila] = useState();
     const pacientesAtendidos = useSelector(state => state.pacientes.lista);
@@ -145,6 +146,7 @@ const TelaAtendente = () => {
       // stompClient.current.send('/app/removerConsulta', {}, JSON.stringify({ idFila: fila.idFila, idConsulta: consulta.idConsulta
 
         if(fila) {
+          if(fila.consultas) {
             return fila.consultas.map((consulta, pos) => {
               if(pos == 0) {
                 return(
@@ -162,13 +164,19 @@ const TelaAtendente = () => {
                 </li>)
               }
             })
+          }
         } else {
             return <span>Carregando...</span>
         }
     }
 
     return(
-        <>
+      <>
+        {sessao.data.roles == 'admin' 
+
+        ?
+
+          <>
             <Header logado={true} tipoUsuario={'atendente'} />
             <section id="secao__Atendente" ref={pagina}>
                 {popup[0] && <Popup atualizacao={atualizacaoPopup} nome={popup[2]} />}
@@ -201,7 +209,18 @@ const TelaAtendente = () => {
                     </table>
                 </div>
             </section>
-        </>
+          </>
+
+          :
+
+          <>
+            <Header logado={true} tipoUsuario={'paciente'} />
+            <div  className="secao__Proibido">
+              <span className="acessoProibido">Não autorizado.</span>
+            </div>
+          </>
+        }
+      </>
     );
 }
 

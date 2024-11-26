@@ -37,7 +37,7 @@ public class ConsultaServices {
         Consulta consultaJaExistente = this.repositorioConsulta.verificarExistenciaDeConsulta(dadosRecebidos.getDataHorarioConsulta());
 
         if(consultaJaExistente != null) {
-            System.out.println("Já existe uma consulta marcada para o horário requisitado. A consulta não será criada.");
+            System.out.println("Consulta já existe: " + consultaJaExistente.getDataHorarioConsulta());
 
             return null;
         }
@@ -50,6 +50,7 @@ public class ConsultaServices {
         } // A consulta já associa automaticamente à fila, e se a fila não existir, é criada aqui mesmo também. Por questões de segurança, eu fiz com que o código não permita mais inserção manual do ID de uma fila na consulta, belê?
 
         this.repositorioConsulta.save(dadosRecebidos);
+        consultaJaExistente = null;
 
         return dadosRecebidos;
     }

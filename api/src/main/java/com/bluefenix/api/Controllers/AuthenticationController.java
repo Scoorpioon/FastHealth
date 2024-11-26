@@ -6,10 +6,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bluefenix.api.Models.Atendente;
 import com.bluefenix.api.Models.Paciente;
 import com.bluefenix.api.Models.Usuario;
-import com.bluefenix.api.Models.DTOs.SessaoPacienteDTO;
 import com.bluefenix.api.Models.DTOs.SecurityDTOs.CredentialsDTO;
 import com.bluefenix.api.Models.DTOs.SecurityDTOs.RegistroAtendenteDTO;
 import com.bluefenix.api.Models.DTOs.SecurityDTOs.RegistroPacienteDTO;
+import com.bluefenix.api.Models.DTOs.SecurityDTOs.SessaoAtendenteDTO;
+import com.bluefenix.api.Models.DTOs.SecurityDTOs.SessaoPacienteDTO;
 import com.bluefenix.api.Models.DTOs.SecurityDTOs.LoginResponseDTO;
 import com.bluefenix.api.Repositories.AtendenteRepository;
 import com.bluefenix.api.Repositories.PacienteRepository;
@@ -20,8 +21,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -87,26 +90,31 @@ public class AuthenticationController {
 
     @PostMapping("/atendente/login")
     public ResponseEntity<?> loginAtendente(@RequestBody @Valid CredentialsDTO dados) {
-
+        UserDetails atendenteEncontrado = this.repositorioAtendente.findByEmail(dados.email());
         var emailESenha = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
-        
         Authentication autenticacao = null;
+
         try {
             autenticacao = this.authenticationManager.authenticate(emailESenha);
             System.out.println(autenticacao.getCredentials());
-        } catch(Exception error) {
-            System.out.println("Ocorreu o seguinte erro ao tentar fazer login" + error);
+        } catch(BadCredentialsException error) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("dados_invalidos");
 
-            if(error instanceof BadCredentialsException) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("E-mail ou senha invalidos. Vaza daqui");
-            }
+        } catch(NullPointerException error) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error.getMessage());
+
+        } catch(InternalAuthenticationServiceException error) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("dados_invalidos");
+
+        } catch(Exception error) {
+            System.out.println("Ocorreu o seguinte erro ao tentar fazer login: " + error);
         }
 
         System.out.println("Informação que eu preciso: " + autenticacao.getPrincipal());
 
         var token = tokenService.gerarToken((Usuario) autenticacao.getPrincipal());
 
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        return ResponseEntity.ok(new SessaoAtendenteDTO(dados.email(), "admin", token));
     }
 
     @PostMapping("/paciente/login")
@@ -121,7 +129,7 @@ public class AuthenticationController {
                    var token = tokenService.gerarToken((Usuario) pacienteEncontrado);
                     System.out.println(token);
 
-                   return ResponseEntity.ok(new SessaoPacienteDTO(pacienteEncontrado.getNome(), pacienteEncontrado.getNumCarteirinha()));
+                   return ResponseEntity.ok(new SessaoPacienteDTO(pacienteEncontrado.getNome(), pacienteEncontrado.getNumCarteirinha(), pacienteEncontrado.getRoles()));
                 } else {
                     System.out.println("Usuário/senha inválidos");
 

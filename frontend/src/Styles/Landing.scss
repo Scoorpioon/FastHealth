@@ -8,6 +8,8 @@
     width: 100%;
     height: auto;
 
+    overflow-y: hidden;
+
     #principal {
         display: flex;
         flex-direction: column;
@@ -21,6 +23,8 @@
 
         width: 100.9vw;
         height: 620px;
+
+        overflow-y: hidden;
 
         h2 {
             font-size: 2.6em;
@@ -67,6 +71,7 @@
         width: 100%;
         height: 550px;
         padding: 6px 55px;
+        overflow-y: hidden;
 
         .img {
             position: relative;

@@ -4,7 +4,6 @@ import '../Styles/Header.scss';
 const Header = ({logado, tipoUsuario}) => {
     const desconectar = () => {
         localStorage.clear();
-
         window.location.href = '/';
     }
 
@@ -38,7 +37,9 @@ const Header = ({logado, tipoUsuario}) => {
 
     return(
         <header>
-            <h1>FH Saúde</h1>
+            <a href="/">
+                <h1>FH Saúde</h1>
+            </a>
             {logicaHeader()}
         </header>
     );

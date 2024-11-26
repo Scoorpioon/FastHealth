@@ -8,11 +8,12 @@ import '../../Styles/Consultas.scss';
 const CriacaoConsultas = () => {
     const [pacientes, setarPacientes] = useState();
     const [dados, setarDados] = useState({});
+    const [erroReq, setarErroReq] = useState();
     const dataConsulta = useRef(null);
     const minutoConsulta = useRef(null);
     const horaConsulta = useRef(null);
-    const erro = useRef(null);
-    const sucesso = useRef(null);
+    const mensagemErro = useRef(null);
+    const mensagemSucesso = useRef(null);
 
     useEffect(() => {
         const requisitarPacientes = async () => {
@@ -46,17 +47,29 @@ const CriacaoConsultas = () => {
         const { target } = e;
         const { name, value } = target;
 
-        if(name == 'horaConsulta' || name == 'minutoConsulta') {
-            if(name == 'horaConsulta') {
-                setarDados({
-                    ...dados,
-                    dataHorarioConsulta: `${dataConsulta.current.value}T${value}:${minutoConsulta.current.value}`
-                });   
-            } else {
-                setarDados({
-                    ...dados,
-                    dataHorarioConsulta: `${dataConsulta.current.value}T${horaConsulta.current.value}:${value}`
-                });   
+        // Explicação dos IFs: Se o campo alterado for hora ou minuto, guardaremos a informação no formato "2024-01-01T12:00". Se o campo for data, tanto ele quanto o campo dataHorario será atualizado. E precisamos definir a lógica do paciente manualmente também, pois precisamos enviar no formato de objeto e com a informação "idPaciente".
+
+        if(name == 'horaConsulta' || name == 'minutoConsulta' || name == 'dataConsulta') {
+            switch(name) {
+                case 'horaConsulta':
+                    setarDados({
+                        ...dados,
+                        dataHorarioConsulta: `${dataConsulta.current.value}T${value}:${minutoConsulta.current.value}`
+                    });
+                    break;
+                case 'minutoConsulta':
+                    setarDados({
+                        ...dados,
+                        dataHorarioConsulta: `${dataConsulta.current.value}T${value}:${minutoConsulta.current.value}`
+                    });
+                    break;
+                case 'dataConsulta':
+                    setarDados({
+                        ...dados,
+                        dataConsulta: value,
+                        dataHorarioConsulta: `${dataConsulta.current.value}T${horaConsulta.current.value}:${minutoConsulta.current.value}`
+                    });
+                    break;
             }
         } else if(name == 'paciente') {
             setarDados({
@@ -65,7 +78,6 @@ const CriacaoConsultas = () => {
                     idPaciente: value
                 }
             });
-
         } else {
             setarDados({
                 ...dados,
@@ -74,22 +86,35 @@ const CriacaoConsultas = () => {
         }
     }
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
-        const mensagemErro = erro.current.style;
-        const mensagemSucesso = sucesso.current.style;
+
+        const estiloErro = mensagemErro.current.style;
+        const estiloSucesso = mensagemSucesso.current.style;
         
         if(dados.dataConsulta && dados.dataHorarioConsulta && dados.tipoConsulta && dados.paciente) {
-            API.post('/consultas/criar', dados);
+            API.post('/consultas/criar', dados)
+            .then(() => {
+                estiloSucesso.display = 'block';
+                estiloErro.display = 'none';
+            })
+            .catch((erro) => {
+                switch(erro.response.data) {
+                    case 'consulta_existente':
+                        mensagemErro.current.textContent = 'Já existe uma consulta marcada para o horário solicitado: '
+                        estiloSucesso.display = 'none';
+                        estiloErro.display = 'block';
+                        break;
+                }
+            })
 
-            mensagemSucesso.display = 'block';
-            mensagemErro.display = 'none';
         } else {
-            console.log('Algum dado não foi preenchido, a requisição não foi feita.');
+            mensagemErro.current.textContent = 'Favor, preencha todas as informações para cadastrar a consulta.';
+            estiloErro.display = 'block';
+            estiloSucesso.display = 'none';
 
-            mensagemErro.display = 'block';
-            mensagemSucesso.display = 'none';
         }
+
     }
 
     return(
@@ -131,8 +156,8 @@ const CriacaoConsultas = () => {
 
                     <input type="submit" value="Cadastrar consulta" />
 
-                    <span className="erro" ref={erro}>Favor, preencha todas as informações para cadastrar a consulta.</span>
-                    <span className="sucesso" ref={sucesso}>Consulta do paciente {dados.nome} marcada com sucesso!</span>
+                    <span className="erro" ref={mensagemErro}></span>
+                    <span className="sucesso" ref={mensagemSucesso}>Consulta marcada com sucesso!</span>
                 </form>
             </section>
         </>

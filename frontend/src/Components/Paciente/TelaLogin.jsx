@@ -29,7 +29,7 @@ const TelaLogin = () => {
         });
 
         if(res) {
-            localStorage.setItem('paciente', JSON.stringify(res));
+            localStorage.setItem('usuario', JSON.stringify(res));
                     
             if(mensagemErro.current) {
                 mensagemErro.current.style.display = 'none';
