@@ -9,7 +9,7 @@ import '../../Styles/Fila.scss';
 
 const Fila = () => {
   const { dataFila } = useParams();
-  const [infoUsuario, setInfoUsuario] = useState(JSON.parse(localStorage.getItem('paciente')));
+  const [infoUsuario, setInfoUsuario] = useState(JSON.parse(localStorage.getItem('usuario')));
   const [posicao, setPosicao] = useState();
   const [fila, setFila] = useState();
   const [consultas, setConsultas] = useState();
@@ -74,9 +74,9 @@ const Fila = () => {
 
   const pegarPosicao = () => {
     if(fila) {
-      console.log(JSON.parse(localStorage.getItem('paciente')).data);
+      console.log(JSON.parse(localStorage.getItem('usuario')).data);
       fila.consultas.map((consulta, pos) => {
-        if(consulta.paciente.nome == JSON.parse(localStorage.getItem('paciente')).data.nome) {
+        if(consulta.paciente.nome == JSON.parse(localStorage.getItem('usuario')).data.nome) {
           setPosicao(pos + 1);
         }
       })

@@ -7,8 +7,9 @@ import '../../Styles/Consultas.scss';
 
 const CriacaoConsultas = () => {
     const [pacientes, setarPacientes] = useState();
-    const [dados, setarDados] = useState({});
     const [erroReq, setarErroReq] = useState();
+    const [sessao, setarSessao] = useState(JSON.parse(localStorage.getItem('usuario')));
+    const [dados, setarDados] = useState({});
     const dataConsulta = useRef(null);
     const minutoConsulta = useRef(null);
     const horaConsulta = useRef(null);
@@ -60,7 +61,7 @@ const CriacaoConsultas = () => {
                 case 'minutoConsulta':
                     setarDados({
                         ...dados,
-                        dataHorarioConsulta: `${dataConsulta.current.value}T${value}:${minutoConsulta.current.value}`
+                        dataHorarioConsulta: `${dataConsulta.current.value}T${horaConsulta.current.value}:${value}`
                     });
                     break;
                 case 'dataConsulta':
@@ -86,6 +87,10 @@ const CriacaoConsultas = () => {
         }
     }
 
+    useEffect(() => {
+        console.log(dados);
+    })
+
     const onSubmit = async (e) => {
         e.preventDefault();
 
@@ -101,7 +106,7 @@ const CriacaoConsultas = () => {
             .catch((erro) => {
                 switch(erro.response.data) {
                     case 'consulta_existente':
-                        mensagemErro.current.textContent = 'Já existe uma consulta marcada para o horário solicitado: '
+                        mensagemErro.current.textContent = 'Já existe uma consulta marcada para o horário solicitado'
                         estiloSucesso.display = 'none';
                         estiloErro.display = 'block';
                         break;
@@ -119,47 +124,62 @@ const CriacaoConsultas = () => {
 
     return(
         <>
-            <Header logado={true} tipoUsuario={'atendente'} />
-            <section id="secao__CriacaoConsultas">
-                <form action="POST" onSubmit={onSubmit}>
-                    <div className="caixa_formulario caixa_horario">
-                        <label htmlFor="dataConsulta">Data e horário da consulta</label>
-                        <div className="horarios">
-                            <input type="date" ref={dataConsulta} name="dataConsulta" id="dataConsulta" onChange={pegarAlteracao} />
-                            <select name="horaConsulta" ref={horaConsulta} id="horaConsulta" onChange={pegarAlteracao}>
-                                {ListarHorarios('hora')}
-                            </select>
-                            <span>:</span>
-                            <select name="minutoConsulta" ref={minutoConsulta} id="minutoConsulta" onChange={pegarAlteracao}>
-                                {ListarHorarios('minuto')}
-                            </select>
-                        </div>
-                    </div>
+            {sessao.data.roles == 'admin'
 
-                    <div className="caixa_formulario">
-                        <label htmlFor="tipoConsulta">Tipo da consulta</label>
-                        <select name="tipoConsulta" id="tipoConsulta" onChange={pegarAlteracao}>
-                            <option disabled selected>Selecione um tipo de consulta...</option>
-                            <option value="Clínico geral">Clínico geral</option>
-                            <option value="Pediatria">Pediatria</option>
-                            <option value="Cardiologista">Cardiologista</option>
-                        </select>
-                    </div>
+            ?
+                <>
+                    <Header logado={true} tipoUsuario={'atendente'} />
+                    <section id="secao__CriacaoConsultas">
+                        <form action="POST" onSubmit={onSubmit}>
+                            <div className="caixa_formulario caixa_horario">
+                                <label htmlFor="dataConsulta">Data e horário da consulta</label>
+                                <div className="horarios">
+                                    <input type="date" ref={dataConsulta} name="dataConsulta" id="dataConsulta" onChange={pegarAlteracao} />
+                                    <select name="horaConsulta" ref={horaConsulta} id="horaConsulta" onChange={pegarAlteracao}>
+                                        {ListarHorarios('hora')}
+                                    </select>
+                                    <span>:</span>
+                                    <select name="minutoConsulta" ref={minutoConsulta} id="minutoConsulta" onChange={pegarAlteracao}>
+                                        {ListarHorarios('minuto')}
+                                    </select>
+                                </div>
+                            </div>
 
-                    <div className="caixa_formulario">
-                        <label htmlFor="paciente">Paciente</label>
-                        <select name="paciente" id="paciente" onChange={pegarAlteracao}>
-                            <option disabled selected>Selecione um paciente...</option>
-                            {listarPacientes()}
-                        </select>
-                    </div>
+                            <div className="caixa_formulario">
+                                <label htmlFor="tipoConsulta">Tipo da consulta</label>
+                                <select name="tipoConsulta" id="tipoConsulta" onChange={pegarAlteracao}>
+                                    <option disabled selected>Selecione um tipo de consulta...</option>
+                                    <option value="Clínico geral">Clínico geral</option>
+                                    <option value="Pediatria">Pediatria</option>
+                                    <option value="Cardiologista">Cardiologista</option>
+                                </select>
+                            </div>
 
-                    <input type="submit" value="Cadastrar consulta" />
+                            <div className="caixa_formulario">
+                                <label htmlFor="paciente">Paciente</label>
+                                <select name="paciente" id="paciente" onChange={pegarAlteracao}>
+                                    <option disabled selected>Selecione um paciente...</option>
+                                    {listarPacientes()}
+                                </select>
+                            </div>
 
-                    <span className="erro" ref={mensagemErro}></span>
-                    <span className="sucesso" ref={mensagemSucesso}>Consulta marcada com sucesso!</span>
-                </form>
-            </section>
+                            <input type="submit" value="Cadastrar consulta" />
+
+                            <span className="erro" ref={mensagemErro}></span>
+                            <span className="sucesso" ref={mensagemSucesso}>Consulta marcada com sucesso!</span>
+                        </form>
+                    </section>
+                </>
+            
+            :
+
+            <>
+                <Header logado={true} tipoUsuario={'paciente'} />
+                <div  className="secao__Proibido">
+                    <span className="acessoProibido">Não autorizado.</span>
+                </div>
+            </>
+            }
         </>
     );
 }

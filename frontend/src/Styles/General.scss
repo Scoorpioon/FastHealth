@@ -28,6 +28,21 @@ body {
     height: 100%;
 }
 
+.secao__Proibido {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    height: 85%;
+
+    .acessoProibido {
+        margin: 0 auto;
+        font-size: 2.2em;
+        font-weight: bold;
+        color: red;
+    }
+}
+
 @mixin botao {
     transition: 250ms;
 

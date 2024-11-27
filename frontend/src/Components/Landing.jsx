@@ -43,6 +43,7 @@ const Landing = () => {
 
                 <span class="tm">&#169; Desenvolvido por Gabriel A.</span>
             </footer>
+            
         </>
     );
 }
