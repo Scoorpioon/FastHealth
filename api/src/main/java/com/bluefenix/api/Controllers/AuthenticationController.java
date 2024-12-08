@@ -11,7 +11,6 @@ import com.bluefenix.api.Models.DTOs.SecurityDTOs.RegistroAtendenteDTO;
 import com.bluefenix.api.Models.DTOs.SecurityDTOs.RegistroPacienteDTO;
 import com.bluefenix.api.Models.DTOs.SecurityDTOs.SessaoAtendenteDTO;
 import com.bluefenix.api.Models.DTOs.SecurityDTOs.SessaoPacienteDTO;
-import com.bluefenix.api.Models.DTOs.SecurityDTOs.LoginResponseDTO;
 import com.bluefenix.api.Repositories.AtendenteRepository;
 import com.bluefenix.api.Repositories.PacienteRepository;
 import com.bluefenix.api.Security.TokenService;
@@ -30,8 +29,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import jakarta.validation.Valid;
-
-// Esse é o nosso controller
 
 @RestController
 @RequestMapping("/auth")

@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "paciente")
-public class Paciente implements UserDetails, Usuario {
+public class Paciente implements Usuario {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,21 +77,6 @@ public class Paciente implements UserDetails, Usuario {
         this.senha = senha;
         this.pcd = pcd;
         this.roles = roles;
-    }
-    
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-    }
-
-    @Override
-    public String getPassword() {
-        return this.senha;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.email;
     }
 
     public Long getIdPaciente() {

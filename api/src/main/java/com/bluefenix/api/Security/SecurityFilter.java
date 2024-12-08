@@ -39,11 +39,6 @@ public class SecurityFilter extends OncePerRequestFilter {
             
             System.out.println("E-mail encontrado: " + email);
 
-            if(usuario == null) {
-                usuario = repositorioPaciente.findByEmail(email);
-                System.out.println("E-mail cadastrado é de paciente");
-            }
-
             var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
